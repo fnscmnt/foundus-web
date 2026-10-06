@@ -107,7 +107,7 @@
             </div>
         </section>
 
-        <!-- KEMBALINYA BAGIAN NEWS -->
+        <!-- PUBLIC: NEWS SECTION -->
         <section id="news" class="py-20 bg-white">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between items-end mb-12">
@@ -115,35 +115,29 @@
                         <h2 class="text-3xl font-bold text-primary mb-2">Latest News</h2>
                         <p class="text-gray-600">Updates on our journey and milestones.</p>
                     </div>
-                    <a href="#" class="text-primary font-bold hover:text-secondary transition hidden md:block">View All News &rarr;</a>
                 </div>
                 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="bg-gray-50 rounded-lg overflow-hidden shadow-sm">
-                        <img src="https://images.unsplash.com/photo-1577896851231-70ef18881754?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="News" class="w-full h-48 object-cover">
-                        <div class="p-6">
-                            <span class="text-secondary text-xs font-bold uppercase tracking-wider">Announcement</span>
-                            <h3 class="text-xl font-bold text-primary mt-2 mb-3">Membangun Keberlanjutan Program</h3>
-                            <p class="text-gray-600 text-sm mb-4">Membuka babak baru dalam pembentukan struktur organisasi dan pemetaan wilayah kerja binaan di Jakarta.</p>
-                            <a href="#" class="text-primary font-semibold text-sm hover:underline">Read More</a>
-                        </div>
-                    </div>
+                <div id="public-news-container" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- News dinamis akan dimuat ke sini -->
                 </div>
             </div>
         </section>
 
+        <!-- PUBLIC: CTA & DONATE SECTION -->
         <section class="py-16 bg-gray-100">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="bg-primary rounded-2xl shadow-xl overflow-hidden">
                     <div class="grid grid-cols-1 md:grid-cols-2">
-                        <div class="p-10 md:p-14 border-b md:border-b-0 md:border-r border-blue-800 flex flex-col justify-center">
-                            <h3 class="text-2xl md:text-3xl font-bold text-white mb-4">Ready to make a difference?</h3>
-                            <p class="text-gray-300 mb-8">We are actively seeking strategic partners to build educational foundations.</p>
-                            <div><a href="mailto:hello@foundus.org" class="bg-white text-primary font-bold py-3 px-8 rounded hover:bg-gray-200 inline-block">Partner With Us</a></div>
+                        <!-- Partner Block -->
+                        <div class="p-10 md:p-14 border-b md:border-b-0 md:border-r border-blue-800 flex flex-col justify-center text-center md:text-left">
+                            <h3 id="pub-partner-title" class="text-2xl md:text-3xl font-bold text-white mb-4">Ready to make a difference?</h3>
+                            <p id="pub-partner-desc" class="text-gray-300 mb-8">We are actively seeking strategic partners to build educational foundations.</p>
+                            <div><a id="pub-partner-link" href="mailto:hello@foundus.org" class="bg-white text-primary font-bold py-3 px-8 rounded hover:bg-gray-200 inline-block">Partner With Us</a></div>
                         </div>
-                        <div class="p-10 md:p-14 bg-blue-900 text-center flex flex-col justify-center items-center md:items-start md:text-left">
-                            <h3 class="text-2xl md:text-3xl font-bold text-secondary mb-4">Support Our Cause</h3>
-                            <p class="text-gray-200 mb-8">Donasi Anda berarti untuk mendampingi mereka meraih masa depan.</p>
+                        <!-- Donate Block -->
+                        <div class="p-10 md:p-14 bg-blue-900 flex flex-col justify-center items-center md:items-start text-center md:text-left">
+                            <h3 id="pub-donate-title" class="text-2xl md:text-3xl font-bold text-secondary mb-4">Support Our Cause</h3>
+                            <p id="pub-donate-desc" class="text-gray-200 mb-8">Donasi Anda berarti untuk mendampingi mereka meraih masa depan.</p>
                             <button onclick="toggleQRIS()" class="bg-secondary text-primary font-bold py-3 px-10 rounded shadow-lg hover:bg-yellow-400 w-full md:w-auto flex items-center justify-center gap-2">
                                 <i class="fas fa-qrcode"></i> Donate Now
                             </button>
@@ -188,16 +182,28 @@
             </div>
         </footer>
 
+        <!-- PUBLIC: QRIS & BANK MODAL -->
         <div id="qrisModal" class="fixed inset-0 bg-black bg-opacity-70 z-50 hidden flex items-center justify-center backdrop-blur-sm transition-opacity">
-            <div class="bg-white rounded-xl shadow-2xl max-w-sm w-full mx-4 overflow-hidden relative">
-                <button onclick="toggleQRIS()" class="absolute top-3 right-3 text-gray-400 hover:text-gray-800 text-2xl leading-none font-bold">&times;</button>
-                <div class="bg-primary p-4 text-center"><h3 class="text-white font-bold text-lg">Scan to Donate</h3></div>
+            <div class="bg-white rounded-xl shadow-2xl max-w-md w-full mx-4 overflow-hidden relative max-h-[90vh] overflow-y-auto">
+                <button onclick="toggleQRIS()" class="absolute top-3 right-3 text-gray-400 hover:text-gray-800 text-2xl leading-none font-bold z-10">&times;</button>
+                <div class="bg-primary p-4 text-center sticky top-0"><h3 class="text-white font-bold text-lg">Support Found Us</h3></div>
+                
                 <div class="p-8 text-center">
-                    <p class="text-sm text-gray-600 mb-6">Silakan scan kode QRIS di bawah ini menggunakan aplikasi e-Wallet Anda.</p>
+                    <p class="text-sm text-gray-600 mb-4">Silakan scan kode QRIS di bawah ini menggunakan aplikasi e-Wallet Anda.</p>
                     <div class="border-2 border-dashed border-gray-300 p-2 rounded-lg inline-block bg-gray-50">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg" alt="QRIS Barcode" class="w-48 h-48 mx-auto object-contain">
+                        <img id="pub-qris-img" src="https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg" alt="QRIS Barcode" class="w-48 h-48 mx-auto object-contain">
                     </div>
-                    <p class="mt-6 text-xs text-gray-400">Atas Nama: <strong class="text-gray-700">Yayasan Found Us</strong></p>
+                    <p class="mt-4 text-xs text-gray-400">Atas Nama: <strong id="pub-qris-name" class="text-gray-700">Yayasan Found Us</strong></p>
+
+                    <!-- Bank Transfer Section (Akan disembunyikan jika kosong) -->
+                    <div id="pub-bank-container" class="mt-6 pt-6 border-t border-gray-200 hidden">
+                        <p class="text-sm text-gray-600 mb-3 font-semibold">Atau Transfer Melalui Rekening Bank:</p>
+                        <div class="bg-blue-50 p-4 rounded-lg text-left">
+                            <p class="text-xs text-gray-500 uppercase font-bold tracking-wider" id="pub-bank-name">BANK MANDIRI</p>
+                            <p class="text-xl font-bold text-primary font-mono my-1" id="pub-bank-account">123-456-7890</p>
+                            <p class="text-sm text-gray-600">a.n <span id="pub-bank-holder" class="font-semibold text-gray-800">Yayasan Found Us</span></p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -224,11 +230,11 @@
             </nav>
         </aside>
 
-        <main class="flex-1 p-8">
-            <div class="flex justify-between items-center mb-8">
+        <main class="flex-1 p-8 h-screen overflow-y-auto">
+            <div class="flex justify-between items-center mb-8 sticky top-0 bg-gray-100 py-4 z-10 border-b border-gray-200">
                 <h1 class="text-2xl font-bold text-gray-800">Dashboard Editor</h1>
-                <button onclick="saveAboutText()" class="bg-green-600 text-white px-4 py-2 rounded shadow hover:bg-green-700 text-sm font-medium">
-                    <i class="fas fa-save mr-2"></i>Save Content Changes
+                <button onclick="saveAllLocalData()" class="bg-green-600 text-white px-6 py-2 rounded shadow hover:bg-green-700 text-sm font-bold">
+                    <i class="fas fa-save mr-2"></i>Save All Changes
                 </button>
             </div>
 
@@ -239,206 +245,300 @@
                     <h2 class="text-lg font-bold text-red-600 mb-4 border-b pb-2"><i class="fas fa-lock mr-2"></i>Security Settings</h2>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Ubah Password Admin</label>
                     <div class="flex gap-2">
-                        <input type="password" id="new-admin-password" placeholder="Password Baru (min 5 karakter)" class="flex-1 border border-gray-300 rounded p-2 text-sm focus:ring-red-500 focus:border-red-500">
+                        <input type="password" id="new-admin-password" placeholder="Password Baru (min 5 karakter)" class="flex-1 border border-gray-300 rounded p-2 text-sm">
                         <button type="button" onclick="changeAdminPassword()" class="bg-red-600 text-white px-4 py-2 rounded text-sm hover:bg-red-700 font-medium">Update Password</button>
                     </div>
-                    <p class="text-xs text-gray-400 mt-2">Password default bawaan adalah: <strong>admin123</strong></p>
                 </div>
 
+                <!-- Edit About Us -->
                 <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
                     <h2 class="text-lg font-bold text-primary mb-4 border-b pb-2">Edit: About Us</h2>
                     <textarea id="admin-about-input" rows="5" class="w-full border border-gray-300 rounded p-2 text-sm focus:ring-primary focus:border-primary">Memuat data...</textarea>
                 </div>
 
-                <!-- KEMBALINYA BAGIAN NEWS DI ADMIN -->
-                <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-                    <div class="flex justify-between items-center border-b pb-2 mb-4">
-                        <h2 class="text-lg font-bold text-primary">Edit: News</h2>
-                        <button class="text-xs bg-blue-100 text-blue-800 px-3 py-1.5 rounded font-semibold hover:bg-blue-200">+ Add News</button>
-                    </div>
-                    <div class="border border-gray-200 p-3 rounded mb-2 flex justify-between items-center hover:bg-gray-50 transition">
-                        <div>
-                            <p class="font-semibold text-sm text-gray-800">Membangun Keberlanjutan Program</p>
-                            <p class="text-xs text-gray-500">Published: Oct 10, 2026</p>
+                <!-- Edit CTA Section (Partner & Donate Texts) -->
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 col-span-1 lg:col-span-2">
+                    <h2 class="text-lg font-bold text-primary mb-4 border-b pb-2">Edit: Banner "Partner With Us" & "Donate"</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-gray-50 p-4 rounded border border-gray-200">
+                            <h3 class="font-bold text-sm text-gray-800 mb-3"><i class="fas fa-handshake mr-2"></i>Partner Section</h3>
+                            <input type="text" id="adm-part-title" placeholder="Judul Partner" class="w-full mb-2 border-gray-300 rounded p-2 text-sm">
+                            <textarea id="adm-part-desc" rows="3" placeholder="Deskripsi Partner" class="w-full mb-2 border-gray-300 rounded p-2 text-sm"></textarea>
+                            <input type="text" id="adm-part-link" placeholder="Link/Email Partner (misal: mailto:a@b.com)" class="w-full border-gray-300 rounded p-2 text-sm">
                         </div>
-                        <div class="text-gray-400 flex gap-3">
-                            <i class="fas fa-edit cursor-pointer hover:text-primary transition"></i>
-                            <i class="fas fa-trash cursor-pointer hover:text-red-500 transition"></i>
+                        <div class="bg-gray-50 p-4 rounded border border-gray-200">
+                            <h3 class="font-bold text-sm text-gray-800 mb-3"><i class="fas fa-heart mr-2"></i>Donate Section</h3>
+                            <input type="text" id="adm-don-title" placeholder="Judul Donate" class="w-full mb-2 border-gray-300 rounded p-2 text-sm">
+                            <textarea id="adm-don-desc" rows="3" placeholder="Deskripsi Donate" class="w-full border-gray-300 rounded p-2 text-sm"></textarea>
                         </div>
                     </div>
                 </div>
 
+                <!-- Edit Donation Modal (QRIS & Bank) -->
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+                    <h2 class="text-lg font-bold text-primary mb-4 border-b pb-2">Edit: Informasi Donasi (QRIS & Bank)</h2>
+                    
+                    <h3 class="text-sm font-bold text-gray-700 mb-2">QRIS Information</h3>
+                    <input type="text" id="adm-qris-url" placeholder="URL Gambar QRIS" class="w-full border-gray-300 rounded p-2 text-sm mb-2">
+                    <input type="text" id="adm-qris-name" placeholder="Atas Nama (QRIS)" class="w-full border-gray-300 rounded p-2 text-sm mb-6">
+                    
+                    <h3 class="text-sm font-bold text-gray-700 mb-2">Bank Transfer (Opsional)</h3>
+                    <p class="text-xs text-gray-500 mb-2">Kosongkan nama bank/rekening jika tidak ingin menampilkan opsi ini.</p>
+                    <input type="text" id="adm-bank-name" placeholder="Nama Bank (Cth: BANK MANDIRI)" class="w-full border-gray-300 rounded p-2 text-sm mb-2">
+                    <input type="text" id="adm-bank-acc" placeholder="Nomor Rekening" class="w-full border-gray-300 rounded p-2 text-sm mb-2">
+                    <input type="text" id="adm-bank-holder" placeholder="Atas Nama (Rekening)" class="w-full border-gray-300 rounded p-2 text-sm">
+                </div>
+
+                <!-- Edit Connect With Us (Social Media) -->
                 <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
                     <h2 class="text-lg font-bold text-primary mb-4 border-b pb-2">Edit: Connect With Us</h2>
-                    <p class="text-xs text-gray-500 mb-4">Atur media kontak yang akan ditampilkan di footer publik.</p>
+                    <p class="text-xs text-gray-500 mb-4">Atur media kontak di footer.</p>
                     
-                    <div class="flex gap-2 mb-4">
-                        <select id="contact-platform" class="border border-gray-300 rounded p-2 text-sm bg-white">
+                    <div class="flex gap-2 mb-4 flex-wrap">
+                        <!-- Opsi Media Sosial Diperbanyak -->
+                        <select id="contact-platform" class="border border-gray-300 rounded p-2 text-sm bg-white min-w-[120px]">
                             <option value="whatsapp">WhatsApp</option>
-                            <option value="linkedin">LinkedIn</option>
                             <option value="email">Email</option>
+                            <option value="instagram">Instagram</option>
+                            <option value="linkedin">LinkedIn</option>
+                            <option value="twitter">Twitter (X)</option>
+                            <option value="facebook">Facebook</option>
+                            <option value="youtube">YouTube</option>
+                            <option value="tiktok">TikTok</option>
                         </select>
-                        <input type="text" id="contact-link" placeholder="No. WA / URL / Email" class="flex-1 border border-gray-300 rounded p-2 text-sm">
-                        <button type="button" onclick="addContactUI()" class="bg-blue-600 text-white px-3 py-2 rounded text-sm hover:bg-blue-700">Tambah</button>
+                        <input type="text" id="contact-link" placeholder="No. WA / URL / Email" class="flex-1 border border-gray-300 rounded p-2 text-sm min-w-[150px]">
+                        <button type="button" onclick="addContactUI()" class="bg-blue-600 text-white px-3 py-2 rounded text-sm hover:bg-blue-700 font-medium">Tambah</button>
                     </div>
 
-                    <div id="admin-contact-list" class="space-y-2 border border-gray-100 p-3 rounded bg-gray-50 min-h-[100px]"></div>
+                    <div id="admin-contact-list" class="space-y-2 border border-gray-100 p-3 rounded bg-gray-50 min-h-[100px] max-h-[250px] overflow-y-auto"></div>
+                </div>
+
+                <!-- Edit News Section -->
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 col-span-1 lg:col-span-2">
+                    <h2 class="text-lg font-bold text-primary mb-4 border-b pb-2">Edit: News & Milestones</h2>
+                    
+                    <div class="bg-gray-50 p-4 border border-gray-200 rounded mb-6">
+                        <h3 class="font-bold text-sm text-gray-800 mb-3">Tambah Berita Baru</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
+                            <input type="text" id="news-title" placeholder="Judul Berita" class="border-gray-300 rounded p-2 text-sm w-full">
+                            <input type="text" id="news-date" placeholder="Tanggal (Cth: Oct 10, 2026)" class="border-gray-300 rounded p-2 text-sm w-full">
+                            <input type="text" id="news-img" placeholder="URL Gambar Berita" class="border-gray-300 rounded p-2 text-sm w-full">
+                            <input type="text" id="news-link" placeholder="Link Berita Lengkap (#)" class="border-gray-300 rounded p-2 text-sm w-full">
+                        </div>
+                        <textarea id="news-excerpt" rows="2" placeholder="Ringkasan singkat berita..." class="w-full border-gray-300 rounded p-2 text-sm mb-3"></textarea>
+                        <button type="button" onclick="addNewsUI()" class="bg-blue-600 text-white px-4 py-2 rounded text-sm hover:bg-blue-700 font-medium">+ Tambah Berita Ke Daftar</button>
+                    </div>
+
+                    <h3 class="font-bold text-sm text-gray-800 mb-2">Daftar Berita Saat Ini</h3>
+                    <div id="admin-news-list" class="space-y-3">
+                        <!-- List berita admin muncul di sini -->
+                    </div>
                 </div>
 
             </div>
         </main>
     </div>
 
+    <!-- ========================================== -->
+    <!-- SCRIPTS / LOGIC APLIKASI                   -->
+    <!-- ========================================== -->
     <script>
-        // ==========================================
-        // UI & NAVIGATION LOGIC
-        // ==========================================
-        function toggleQRIS() {
-            document.getElementById('qrisModal').classList.toggle('hidden');
-        }
-
-        async function showAdminAuth() {
-            const btnText = document.getElementById('admin-login-text');
-            btnText.innerText = "Checking...";
-            
-            const password = prompt("Masukkan Password Admin (Default: admin123):");
-            
-            if (!password) {
-                btnText.innerText = "Admin Access";
-                return;
-            }
-
-            try {
-                const response = await fetch('/api/verify-password', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ password })
-                });
-                
-                const result = await response.json();
-
-                if (result.success) {
-                    document.getElementById('public-view').classList.add('hidden');
-                    document.getElementById('admin-view').classList.remove('hidden');
-                    document.getElementById('admin-view').classList.add('flex');
-                    window.scrollTo(0,0);
-                } else {
-                    alert("Password salah! Akses ditolak.");
+        // --- 1. STATE DATA UTAMA (Mode Demo Lokal) ---
+        let appData = {
+            cta: {
+                partnerTitle: "Ready to make a difference?",
+                partnerDesc: "We are actively seeking strategic partners to build educational foundations.",
+                partnerLink: "mailto:hello@foundus.org",
+                donateTitle: "Support Our Cause",
+                donateDesc: "Donasi Anda berarti untuk mendampingi mereka meraih masa depan."
+            },
+            donate: {
+                qrisUrl: "https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg",
+                qrisName: "Yayasan Found Us",
+                bankName: "BANK MANDIRI",
+                bankAccount: "123-456-7890",
+                bankHolder: "Yayasan Found Us"
+            },
+            contacts: [
+                { platform: 'whatsapp', link: 'https://wa.me/628123456789' },
+                { platform: 'email', link: 'mailto:hello@foundus.org' },
+                { platform: 'instagram', link: 'https://instagram.com/' }
+            ],
+            news: [
+                {
+                    title: "Langkah Awal Menuju NGO Internasional",
+                    date: "Oct 10, 2026",
+                    excerpt: "Membuka babak baru dalam pembentukan struktur organisasi dan pemetaan wilayah kerja binaan di Jakarta.",
+                    image: "https://images.unsplash.com/photo-1577896851231-70ef18881754?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                    link: "#"
                 }
-            } catch (error) {
-                console.error("Auth error:", error);
-                if(password === "admin123") {
-                     alert("API Vercel belum merespons. Menggunakan akses darurat (Offline Mode).");
-                     document.getElementById('public-view').classList.add('hidden');
-                     document.getElementById('admin-view').classList.remove('hidden');
-                     document.getElementById('admin-view').classList.add('flex');
-                     window.scrollTo(0,0);
-                } else {
-                     alert("Koneksi API Gagal. Password default darurat adalah: admin123");
-                }
-            }
-            btnText.innerText = "Admin Access";
-        }
-
-        function showPublic() {
-            document.getElementById('public-view').classList.remove('hidden');
-            document.getElementById('public-view').classList.add('block');
-            document.getElementById('admin-view').classList.add('hidden');
-            window.scrollTo(0,0);
-            renderPublicContacts();
-        }
-
-        // ==========================================
-        // FITUR UBAH PASSWORD
-        // ==========================================
-        async function changeAdminPassword() {
-            const newPassword = document.getElementById('new-admin-password').value;
-            if (!newPassword || newPassword.length < 5) {
-                return alert("Gagal: Password baru harus minimal 5 karakter!");
-            }
-
-            try {
-                const response = await fetch('/api/update-password', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ newPassword })
-                });
-                const result = await response.json();
-
-                if (result.success) {
-                    alert('Berhasil! Password admin telah diubah.');
-                    document.getElementById('new-admin-password').value = '';
-                } else {
-                    alert('Gagal mengubah password di server.');
-                }
-            } catch (error) {
-                console.error("Error:", error);
-                alert("Terjadi kesalahan sistem. Pastikan file api/update-password.js sudah ter-deploy di Vercel.");
-            }
-        }
-
-        // ==========================================
-        // DYNAMIC CONTACTS LOGIC
-        // ==========================================
-        let contactsData = [
-            { platform: 'whatsapp', link: 'https://wa.me/628123456789' },
-            { platform: 'email', link: 'mailto:hello@foundus.org' }
-        ];
+            ]
+        };
 
         const iconMap = {
             'whatsapp': { class: 'fab fa-whatsapp', color: 'text-green-500 hover:text-green-400' },
             'linkedin': { class: 'fab fa-linkedin', color: 'text-blue-500 hover:text-blue-400' },
-            'email': { class: 'fas fa-envelope', color: 'text-gray-300 hover:text-white' }
+            'email': { class: 'fas fa-envelope', color: 'text-gray-400 hover:text-gray-300' },
+            'instagram': { class: 'fab fa-instagram', color: 'text-pink-500 hover:text-pink-400' },
+            'facebook': { class: 'fab fa-facebook', color: 'text-blue-600 hover:text-blue-500' },
+            'twitter': { class: 'fab fa-twitter', color: 'text-blue-400 hover:text-blue-300' },
+            'youtube': { class: 'fab fa-youtube', color: 'text-red-600 hover:text-red-500' },
+            'tiktok': { class: 'fab fa-tiktok', color: 'text-gray-400 hover:text-white' }
         };
 
-        function renderAdminContacts() {
-            const container = document.getElementById('admin-contact-list');
-            container.innerHTML = '';
-            contactsData.forEach((contact, index) => {
-                const iconClass = iconMap[contact.platform].class;
-                container.innerHTML += `
-                    <div class="flex justify-between items-center bg-white p-2 border border-gray-200 rounded">
-                        <div class="flex items-center gap-3 text-sm">
-                            <i class="${iconClass} text-gray-600 text-lg"></i>
-                            <span class="text-gray-800">${contact.link}</span>
-                        </div>
-                        <button onclick="removeContact(${index})" class="text-red-500 hover:text-red-700 text-sm"><i class="fas fa-trash"></i></button>
-                    </div>
-                `;
-            });
+        // --- 2. FUNGSI RENDER (PUBLIK & ADMIN) ---
+        
+        function renderAllUI() {
+            // Render CTA Admin
+            document.getElementById('adm-part-title').value = appData.cta.partnerTitle;
+            document.getElementById('adm-part-desc').value = appData.cta.partnerDesc;
+            document.getElementById('adm-part-link').value = appData.cta.partnerLink;
+            document.getElementById('adm-don-title').value = appData.cta.donateTitle;
+            document.getElementById('adm-don-desc').value = appData.cta.donateDesc;
+            
+            // Render CTA Publik
+            document.getElementById('pub-partner-title').innerText = appData.cta.partnerTitle;
+            document.getElementById('pub-partner-desc').innerText = appData.cta.partnerDesc;
+            document.getElementById('pub-partner-link').href = appData.cta.partnerLink;
+            document.getElementById('pub-donate-title').innerText = appData.cta.donateTitle;
+            document.getElementById('pub-donate-desc').innerText = appData.cta.donateDesc;
+
+            // Render Donate Admin
+            document.getElementById('adm-qris-url').value = appData.donate.qrisUrl;
+            document.getElementById('adm-qris-name').value = appData.donate.qrisName;
+            document.getElementById('adm-bank-name').value = appData.donate.bankName;
+            document.getElementById('adm-bank-acc').value = appData.donate.bankAccount;
+            document.getElementById('adm-bank-holder').value = appData.donate.bankHolder;
+
+            // Render Donate Publik
+            document.getElementById('pub-qris-img').src = appData.donate.qrisUrl;
+            document.getElementById('pub-qris-name').innerText = appData.donate.qrisName;
+            
+            const bankContainer = document.getElementById('pub-bank-container');
+            if(appData.donate.bankName && appData.donate.bankAccount) {
+                bankContainer.classList.remove('hidden');
+                document.getElementById('pub-bank-name').innerText = appData.donate.bankName;
+                document.getElementById('pub-bank-account').innerText = appData.donate.bankAccount;
+                document.getElementById('pub-bank-holder').innerText = appData.donate.bankHolder;
+            } else {
+                bankContainer.classList.add('hidden');
+            }
+
+            // Render Contacts
+            renderContactsUI();
+            
+            // Render News
+            renderNewsUI();
         }
 
+        // Fitur Kontak
+        function renderContactsUI() {
+            // Admin
+            const adminCont = document.getElementById('admin-contact-list');
+            adminCont.innerHTML = '';
+            appData.contacts.forEach((contact, idx) => {
+                const iconInfo = iconMap[contact.platform];
+                adminCont.innerHTML += `
+                    <div class="flex justify-between items-center bg-white p-2 border border-gray-200 rounded">
+                        <div class="flex items-center gap-3 text-sm"><i class="${iconInfo.class} text-gray-600 text-lg"></i><span>${contact.link}</span></div>
+                        <button onclick="removeContact(${idx})" class="text-red-500 hover:text-red-700"><i class="fas fa-trash"></i></button>
+                    </div>`;
+            });
+            // Publik
+            const pubCont = document.getElementById('public-contacts');
+            pubCont.innerHTML = '';
+            appData.contacts.forEach(contact => {
+                const iconInfo = iconMap[contact.platform];
+                pubCont.innerHTML += `<a href="${contact.link}" target="_blank" class="${iconInfo.color} text-2xl transition transform hover:scale-110"><i class="${iconInfo.class}"></i></a>`;
+            });
+        }
         function addContactUI() {
             const platform = document.getElementById('contact-platform').value;
             let link = document.getElementById('contact-link').value.trim();
-            if(!link) return alert("Link/Media tidak boleh kosong!");
+            if(!link) return alert("Link tidak boleh kosong!");
             if(platform === 'whatsapp' && !link.includes('wa.me')) link = `https://wa.me/${link}`;
             if(platform === 'email' && !link.includes('mailto:')) link = `mailto:${link}`;
-            contactsData.push({ platform, link });
+            appData.contacts.push({ platform, link });
             document.getElementById('contact-link').value = '';
-            renderAdminContacts();
+            renderContactsUI();
         }
+        function removeContact(idx) { appData.contacts.splice(idx, 1); renderContactsUI(); }
 
-        function removeContact(index) {
-            contactsData.splice(index, 1);
-            renderAdminContacts();
-        }
-
-        function renderPublicContacts() {
-            const container = document.getElementById('public-contacts');
-            container.innerHTML = '';
-            contactsData.forEach(contact => {
-                const iconInfo = iconMap[contact.platform];
-                container.innerHTML += `
-                    <a href="${contact.link}" target="_blank" class="${iconInfo.color} text-2xl transition transform hover:scale-110">
-                        <i class="${iconInfo.class}"></i>
-                    </a>
-                `;
+        // Fitur News
+        function renderNewsUI() {
+            // Admin
+            const adminNews = document.getElementById('admin-news-list');
+            adminNews.innerHTML = '';
+            appData.news.forEach((n, idx) => {
+                adminNews.innerHTML += `
+                    <div class="border border-gray-200 p-3 rounded flex justify-between items-center bg-white">
+                        <div>
+                            <p class="font-semibold text-sm text-gray-800">${n.title}</p>
+                            <p class="text-xs text-gray-500">Date: ${n.date}</p>
+                        </div>
+                        <button onclick="removeNews(${idx})" class="text-red-500 hover:text-red-700"><i class="fas fa-trash"></i></button>
+                    </div>`;
             });
+            // Publik
+            const pubNews = document.getElementById('public-news-container');
+            pubNews.innerHTML = '';
+            appData.news.forEach(n => {
+                pubNews.innerHTML += `
+                    <div class="bg-gray-50 rounded-lg overflow-hidden shadow-sm">
+                        <img src="${n.image}" alt="News Image" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <span class="text-secondary text-xs font-bold uppercase tracking-wider">${n.date}</span>
+                            <h3 class="text-xl font-bold text-primary mt-2 mb-3">${n.title}</h3>
+                            <p class="text-gray-600 text-sm mb-4">${n.excerpt}</p>
+                            <a href="${n.link}" class="text-primary font-semibold text-sm hover:underline">Read More</a>
+                        </div>
+                    </div>`;
+            });
+        }
+        function addNewsUI() {
+            const title = document.getElementById('news-title').value.trim();
+            const date = document.getElementById('news-date').value.trim();
+            const image = document.getElementById('news-img').value.trim() || 'https://images.unsplash.com/photo-1577896851231-70ef18881754?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80';
+            const link = document.getElementById('news-link').value.trim() || '#';
+            const excerpt = document.getElementById('news-excerpt').value.trim();
+            
+            if(!title || !excerpt) return alert("Judul dan Ringkasan wajib diisi!");
+            appData.news.unshift({ title, date, image, link, excerpt }); // Tambah ke atas
+            
+            // Kosongkan form input
+            document.getElementById('news-title').value = '';
+            document.getElementById('news-date').value = '';
+            document.getElementById('news-img').value = '';
+            document.getElementById('news-link').value = '';
+            document.getElementById('news-excerpt').value = '';
+            renderNewsUI();
+        }
+        function removeNews(idx) { appData.news.splice(idx, 1); renderNewsUI(); }
+
+        // --- 3. FUNGSI SIMPAN SELURUH DATA ---
+        async function saveAllLocalData() {
+            // Ambil dari input UI
+            appData.cta.partnerTitle = document.getElementById('adm-part-title').value;
+            appData.cta.partnerDesc = document.getElementById('adm-part-desc').value;
+            appData.cta.partnerLink = document.getElementById('adm-part-link').value;
+            appData.cta.donateTitle = document.getElementById('adm-don-title').value;
+            appData.cta.donateDesc = document.getElementById('adm-don-desc').value;
+
+            appData.donate.qrisUrl = document.getElementById('adm-qris-url').value;
+            appData.donate.qrisName = document.getElementById('adm-qris-name').value;
+            appData.donate.bankName = document.getElementById('adm-bank-name').value;
+            appData.donate.bankAccount = document.getElementById('adm-bank-acc').value;
+            appData.donate.bankHolder = document.getElementById('adm-bank-holder').value;
+
+            // Update UI Publik dengan data baru
+            renderAllUI();
+            
+            // Simpan Teks About Us ke Vercel/Turso (Fungsi yang sudah ada sebelumnya)
+            await saveAboutText();
         }
 
         // ==========================================
-        // DATABASE CRUD LOGIC (Turso API Call - About Us)
+        // DATABASE VERCEL & TURSO LOGIC (About Us & Password)
         // ==========================================
         async function loadAboutText() {
             try {
@@ -449,9 +549,7 @@
                     document.getElementById('public-about-text').innerText = result.data;
                     document.getElementById('admin-about-input').value = result.data;
                 }
-            } catch (error) {
-                console.error("Gagal memuat data:", error);
-            }
+            } catch (error) { console.error("Mode Offline DB"); }
         }
 
         async function saveAboutText() {
@@ -464,21 +562,71 @@
                 });
                 const result = await response.json();
                 if (result.success) {
-                    alert('Data About Us berhasil disimpan!');
+                    alert('Semua perubahan berhasil diterapkan & disimpan!');
                     loadAboutText(); 
                 } else {
-                    alert('Gagal menyimpan data ke database.');
+                    alert('Gagal menyimpan data ke database server.');
                 }
             } catch (error) {
-                console.error("Error:", error);
-                alert('Mode Offline: Teks belum tersimpan ke server Turso.');
+                alert('Berhasil disimpan di sistem lokal (Refresh akan hilang). Hubungkan Vercel untuk simpan permanen.');
             }
+        }
+
+        async function changeAdminPassword() {
+            const newPassword = document.getElementById('new-admin-password').value;
+            if (!newPassword || newPassword.length < 5) return alert("Password minimal 5 karakter!");
+            try {
+                const response = await fetch('/api/update-password', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ newPassword })
+                });
+                if ((await response.json()).success) {
+                    alert('Password admin telah diubah!');
+                    document.getElementById('new-admin-password').value = '';
+                }
+            } catch (e) { alert("Sistem Vercel belum siap. Password belum bisa diganti permanen."); }
+        }
+
+        // --- 4. NAVIGASI UI & INISIALISASI ---
+        function toggleQRIS() { document.getElementById('qrisModal').classList.toggle('hidden'); }
+        
+        async function showAdminAuth() {
+            const btnText = document.getElementById('admin-login-text');
+            btnText.innerText = "Checking...";
+            const password = prompt("Masukkan Password Admin (Default: admin123):");
+            if (!password) { btnText.innerText = "Admin Access"; return; }
+
+            try {
+                const response = await fetch('/api/verify-password', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password })
+                });
+                if ((await response.json()).success) { goAdmin(); } else { alert("Password salah!"); }
+            } catch (error) {
+                if(password === "admin123") { goAdmin(); } else { alert("Koneksi API Gagal. Password default adalah: admin123"); }
+            }
+            btnText.innerText = "Admin Access";
+        }
+
+        function goAdmin() {
+            document.getElementById('public-view').classList.add('hidden');
+            document.getElementById('admin-view').classList.remove('hidden');
+            document.getElementById('admin-view').classList.add('flex');
+            window.scrollTo(0,0);
+        }
+
+        function showPublic() {
+            document.getElementById('public-view').classList.remove('hidden');
+            document.getElementById('public-view').classList.add('block');
+            document.getElementById('admin-view').classList.add('hidden');
+            window.scrollTo(0,0);
         }
 
         document.addEventListener('DOMContentLoaded', () => {
             loadAboutText();
-            renderAdminContacts();
-            renderPublicContacts();
+            renderAllUI();
         });
     </script>
 </body>
