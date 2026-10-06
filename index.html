@@ -19,10 +19,18 @@
         html { scroll-behavior: smooth; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* Render Kustomisasi Editor untuk Publik */
         .ql-editor-public h1, .ql-editor-public h2 { font-weight: bold; margin-bottom: 0.5rem; }
         .ql-editor-public ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 0.5rem; }
         .ql-editor-public ol { list-style-type: decimal; padding-left: 1.5rem; margin-bottom: 0.5rem; }
         .bg-transition { transition: background-image 1.5s ease-in-out; }
+        
+        /* Mendukung fitur Rata Kanan, Kiri, Tengah, Justify */
+        .ql-align-center { text-align: center; }
+        .ql-align-justify { text-align: justify; }
+        .ql-align-right { text-align: right; }
+        .ql-align-left { text-align: left; }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans">
@@ -76,7 +84,8 @@
                 <h2 class="text-3xl font-bold text-primary mb-6">About Us</h2>
                 <div class="w-24 h-1 bg-secondary mx-auto mb-8"></div>
                 <div class="bg-white/80 p-8 rounded-2xl shadow-sm backdrop-blur-sm border border-gray-100">
-                    <p id="public-about-text" class="text-gray-700 text-lg leading-relaxed whitespace-pre-line text-justify">Memuat data...</p>
+                    <!-- Text About Us memanggil ql-editor-public agar format dari Editor berfungsi -->
+                    <div id="public-about-text" class="text-gray-700 text-lg leading-relaxed whitespace-pre-line ql-editor-public">Memuat data...</div>
                 </div>
             </div>
         </section>
@@ -183,19 +192,26 @@
             </div>
         </footer>
 
-        <!-- PUBLIC: QRIS & BANK MODAL -->
+        <!-- PUBLIC: QRIS & BANK MODAL TERINTEGRASI -->
         <div id="qrisModal" class="fixed inset-0 bg-black bg-opacity-70 z-50 hidden flex items-center justify-center backdrop-blur-sm transition-opacity">
             <div class="bg-white rounded-xl shadow-2xl max-w-md w-full mx-4 overflow-hidden relative max-h-[90vh] overflow-y-auto">
                 <button onclick="toggleQRIS()" class="absolute top-3 right-3 text-gray-400 hover:text-gray-800 text-2xl leading-none font-bold z-10">&times;</button>
                 <div class="bg-primary p-4 text-center sticky top-0"><h3 class="text-white font-bold text-lg">Support Found Us</h3></div>
                 
                 <div class="p-8 text-center">
-                    <p class="text-sm text-gray-600 mb-4">Silakan scan kode QRIS di bawah ini menggunakan aplikasi e-Wallet Anda.</p>
-                    <div class="border-2 border-dashed border-gray-300 p-2 rounded-lg inline-block bg-gray-50">
-                        <img id="pub-qris-img" src="https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg" alt="QRIS Barcode" class="w-48 h-48 mx-auto object-contain">
-                    </div>
-                    <p class="mt-4 text-xs text-gray-400">Atas Nama: <strong id="pub-qris-name" class="text-gray-700">Yayasan Found Us</strong></p>
+                    <!-- Kontainer Peringatan Kosong -->
+                    <p id="pub-no-donate" class="text-sm text-red-500 hidden py-4 font-semibold">Metode pembayaran donasi saat ini belum tersedia.</p>
 
+                    <!-- Kontainer QRIS -->
+                    <div id="pub-qris-container">
+                        <p class="text-sm text-gray-600 mb-4">Silakan scan kode QRIS di bawah ini menggunakan aplikasi e-Wallet Anda.</p>
+                        <div class="border-2 border-dashed border-gray-300 p-2 rounded-lg inline-block bg-gray-50">
+                            <img id="pub-qris-img" src="" alt="QRIS Barcode" class="w-48 h-48 mx-auto object-contain">
+                        </div>
+                        <p class="mt-4 text-xs text-gray-400">Atas Nama: <strong id="pub-qris-name" class="text-gray-700"></strong></p>
+                    </div>
+
+                    <!-- Kontainer Bank -->
                     <div id="pub-bank-container" class="mt-6 pt-6 border-t border-gray-200 hidden">
                         <p class="text-sm text-gray-600 mb-3 font-semibold">Atau Transfer Melalui Rekening Bank:</p>
                         <div class="bg-blue-50 p-4 rounded-lg text-left">
@@ -221,6 +237,7 @@
             </div>
             <nav class="flex-1 p-4 space-y-2">
                 <a href="#" class="block px-4 py-3 bg-blue-900 rounded text-sm font-medium"><i class="fas fa-home mr-3"></i> Dashboard</a>
+                
                 <div class="pt-8 border-t border-blue-800 mt-8">
                     <button onclick="showPublic()" class="w-full bg-secondary text-primary px-4 py-3 rounded text-sm font-bold shadow hover:bg-yellow-400 flex items-center justify-center">
                         <i class="fas fa-globe mr-2"></i> View Public Site
@@ -239,6 +256,7 @@
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 pb-20">
                 
+                <!-- Edit Password -->
                 <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
                     <div class="flex justify-between items-center border-b pb-2 mb-4">
                         <h2 class="text-lg font-bold text-red-600"><i class="fas fa-lock mr-2"></i>Security Settings</h2>
@@ -250,14 +268,18 @@
                     </div>
                 </div>
 
+                <!-- Edit About Us Menggunakan Rich Text Editor -->
                 <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
                     <div class="flex justify-between items-center border-b pb-2 mb-4">
                         <h2 class="text-lg font-bold text-primary">Edit: About Us</h2>
                         <button onclick="saveAllToDatabase('About Us')" class="text-xs bg-green-100 text-green-700 px-3 py-1.5 rounded font-semibold hover:bg-green-200 transition"><i class="fas fa-save mr-1"></i> Save</button>
                     </div>
-                    <textarea id="admin-about-input" rows="5" class="w-full border border-gray-300 rounded p-2 text-sm focus:ring-primary focus:border-primary">Memuat data...</textarea>
+                    <div class="bg-white">
+                        <div id="about-editor-container" style="height: 150px;"></div>
+                    </div>
                 </div>
 
+                <!-- Edit Latar Belakang -->
                 <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 col-span-1 lg:col-span-2">
                     <div class="flex justify-between items-center border-b pb-2 mb-4">
                         <h2 class="text-lg font-bold text-primary">Edit: Latar Belakang (Slideshow)</h2>
@@ -281,6 +303,7 @@
                     <div id="admin-bg-list" class="flex flex-wrap gap-4 bg-gray-50 p-4 border border-gray-100 rounded min-h-[100px]"></div>
                 </div>
 
+                <!-- Edit Partner & Donate Text -->
                 <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 col-span-1 lg:col-span-2">
                     <div class="flex justify-between items-center border-b pb-2 mb-4">
                         <h2 class="text-lg font-bold text-primary">Edit: Banner "Partner With Us" & "Donate"</h2>
@@ -301,21 +324,25 @@
                     </div>
                 </div>
 
+                <!-- Edit Info Donasi -->
                 <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
                     <div class="flex justify-between items-center border-b pb-2 mb-4">
                         <h2 class="text-lg font-bold text-primary">Edit: Data Donasi (QRIS & Bank)</h2>
                         <button onclick="saveAllToDatabase('Data Donasi')" class="text-xs bg-green-100 text-green-700 px-3 py-1.5 rounded font-semibold hover:bg-green-200 transition"><i class="fas fa-save mr-1"></i> Save</button>
                     </div>
+                    <p class="text-xs text-gray-500 mb-4">Jika Anda mengosongkan informasi di bawah, fitur donasi tidak akan ditampilkan ke publik.</p>
+                    
                     <h3 class="text-sm font-bold text-gray-700 mb-2">QRIS Information</h3>
                     <input type="text" id="adm-qris-url" placeholder="URL Gambar QRIS" class="w-full border-gray-300 rounded p-2 text-sm mb-2">
                     <input type="text" id="adm-qris-name" placeholder="Atas Nama (QRIS)" class="w-full border-gray-300 rounded p-2 text-sm mb-6">
-                    <h3 class="text-sm font-bold text-gray-700 mb-2">Bank Transfer (Opsional)</h3>
-                    <p class="text-xs text-gray-500 mb-2">Kosongkan nama bank/rekening jika tidak ingin menampilkan opsi ini.</p>
+                    
+                    <h3 class="text-sm font-bold text-gray-700 mb-2">Bank Transfer</h3>
                     <input type="text" id="adm-bank-name" placeholder="Nama Bank (Cth: BANK MANDIRI)" class="w-full border-gray-300 rounded p-2 text-sm mb-2">
                     <input type="text" id="adm-bank-acc" placeholder="Nomor Rekening" class="w-full border-gray-300 rounded p-2 text-sm mb-2">
                     <input type="text" id="adm-bank-holder" placeholder="Atas Nama (Rekening)" class="w-full border-gray-300 rounded p-2 text-sm">
                 </div>
 
+                <!-- Edit Kontak -->
                 <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
                     <div class="flex justify-between items-center border-b pb-2 mb-4">
                         <h2 class="text-lg font-bold text-primary">Edit: Connect With Us</h2>
@@ -339,6 +366,7 @@
                     <div id="admin-contact-list" class="space-y-2 border border-gray-100 p-3 rounded bg-gray-50 min-h-[100px] max-h-[250px] overflow-y-auto"></div>
                 </div>
 
+                <!-- Edit News -->
                 <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 col-span-1 lg:col-span-2">
                     <div class="flex justify-between items-center border-b pb-2 mb-4">
                         <h2 class="text-lg font-bold text-primary">Edit: News & Milestones</h2>
@@ -380,15 +408,34 @@
         </main>
     </div>
 
-    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    <!-- Script Utama (Quill Editor & Aplikasi) -->
     <script>
-        let quill;
+        let quillNews;
+        let quillAbout;
+
         document.addEventListener('DOMContentLoaded', () => {
+            // Pengaturan Toolbar untuk Editor
+            const toolbarOptions = [
+                ['bold', 'italic', 'underline', 'strike'],
+                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                [{ 'align': [] }], // FITUR ALIGNMENT DITAMBAHKAN DI SINI
+                [{ 'header': [1, 2, 3, false] }],
+                ['link']
+            ];
+
             try {
-                quill = new Quill('#editor-container', {
+                // Inisialisasi Editor Berita
+                quillNews = new Quill('#editor-container', {
                     theme: 'snow',
                     placeholder: 'Tulis isi berita di sini...',
-                    modules: { toolbar: [ ['bold', 'italic', 'underline', 'strike'], [{ 'list': 'ordered'}, { 'list': 'bullet' }], [{ 'header': [1, 2, 3, false] }], ['link'] ] }
+                    modules: { toolbar: toolbarOptions }
+                });
+
+                // Inisialisasi Editor About Us
+                quillAbout = new Quill('#about-editor-container', {
+                    theme: 'snow',
+                    placeholder: 'Tulis isi About Us di sini...',
+                    modules: { toolbar: toolbarOptions }
                 });
             } catch (e) { console.error("Editor gagal dimuat:", e); }
         });
@@ -404,7 +451,8 @@
         // 1. MASTER APP DATA
         // ==========================================
         let appData = {
-            aboutText: "Setiap anak berhak memupuk keyakinan untuk mendapatkan masa depan yang lebih baik. Found Us berusaha untuk menjaga itu, sebuah asa yang memancar dari binar mata anak-anak miskin kota. Meski mereka tumbuh di antara lorong-lorong muram Jakarta.\n\nAtas dasar itu, kami bertekad untuk menemui dan menemani mereka demi menjaga nyala harapannya melalui penyediaan ruang belajar dan wadah pengembangan potensi yang selama ini belum didapati secara maksimal.",
+            // Teks About Us Default (Dengan Format Center Tengah)
+            aboutText: "<p class=\"ql-align-center\">Setiap anak berhak memupuk keyakinan untuk mendapatkan masa depan yang lebih baik. Found Us berusaha untuk menjaga itu, sebuah asa yang memancar dari binar mata anak-anak miskin kota. Meski mereka tumbuh di antara lorong-lorong muram Jakarta.</p><p class=\"ql-align-center\"><br></p><p class=\"ql-align-center\">Atas dasar itu, kami bertekad untuk menemui dan menemani mereka demi menjaga nyala harapannya melalui penyediaan ruang belajar dan wadah pengembangan potensi yang selama ini belum didapati secara maksimal.</p>",
             cta: {
                 partnerTitle: "Ready to make a difference?",
                 partnerDesc: "We are actively seeking strategic partners to build educational foundations.",
@@ -460,7 +508,6 @@
                     const result = await response.json();
                     if (result.success && result.data) {
                         const dbData = JSON.parse(result.data);
-                        // Fitur Penyelamat: Menambal data kosong agar UI tidak crash
                         if(dbData.aboutText) appData.aboutText = dbData.aboutText;
                         if(dbData.cta) appData.cta = { ...appData.cta, ...dbData.cta };
                         if(dbData.donate) appData.donate = { ...appData.donate, ...dbData.donate };
@@ -481,7 +528,9 @@
         }
 
         async function saveAllToDatabase(sectionName = 'Semua Data') {
-            appData.aboutText = document.getElementById('admin-about-input').value;
+            // Ambil dari Text Editor About Us
+            appData.aboutText = quillAbout ? quillAbout.root.innerHTML : appData.aboutText;
+
             appData.cta.partnerTitle = document.getElementById('adm-part-title').value;
             appData.cta.partnerDesc = document.getElementById('adm-part-desc').value;
             appData.cta.partnerLink = document.getElementById('adm-part-link').value;
@@ -503,14 +552,13 @@
                     body: JSON.stringify({ payload: JSON.stringify(appData) })
                 });
                 const result = await response.json();
-                
                 if (result.success) {
-                    alert(`✅ Mantap! Perubahan pada [${sectionName}] berhasil disimpan permanen ke server.`);
+                    alert(`✅ Perubahan pada [${sectionName}] berhasil disimpan permanen.`);
                 } else {
-                    alert(`⚠ Gagal simpan ke server. Namun [${sectionName}] sudah diperbarui di pratinjau Anda.`);
+                    alert(`⚠ Gagal simpan ke server. Namun [${sectionName}] sudah diperbarui di layar Anda.`);
                 }
             } catch (error) {
-                alert(`ℹ️ Mode Simulasi: Perubahan pada [${sectionName}] diterapkan di layar, namun belum tersimpan permanen di database.`);
+                alert(`ℹ️ Mode Simulasi: Perubahan pada [${sectionName}] diterapkan di layar Anda.`);
             }
         }
 
@@ -642,13 +690,15 @@
         }
 
         // ==========================================
-        // 4. RENDER UI FUNCTIONS (DENGAN SAFE FALLBACK)
+        // 4. RENDER UI FUNCTIONS (DENGAN SAFE FALLBACK & LOGIKA QR)
         // ==========================================
         function renderAllUI() {
             try {
-                document.getElementById('admin-about-input').value = appData?.aboutText || "";
-                document.getElementById('public-about-text').innerText = appData?.aboutText || "";
+                // Menata About Us
+                if(quillAbout && appData?.aboutText) quillAbout.root.innerHTML = appData.aboutText;
+                document.getElementById('public-about-text').innerHTML = appData?.aboutText || "";
 
+                // Menata CTA
                 document.getElementById('adm-part-title').value = appData?.cta?.partnerTitle || "";
                 document.getElementById('adm-part-desc').value = appData?.cta?.partnerDesc || "";
                 document.getElementById('adm-part-link').value = appData?.cta?.partnerLink || "";
@@ -661,26 +711,44 @@
                 document.getElementById('pub-donate-title').innerText = appData?.cta?.donateTitle || "Support Us";
                 document.getElementById('pub-donate-desc').innerText = appData?.cta?.donateDesc || "";
 
+                // Logika Form Donate Admin
                 document.getElementById('adm-qris-url').value = appData?.donate?.qrisUrl || "";
                 document.getElementById('adm-qris-name').value = appData?.donate?.qrisName || "";
                 document.getElementById('adm-bank-name').value = appData?.donate?.bankName || "";
                 document.getElementById('adm-bank-acc').value = appData?.donate?.bankAccount || "";
                 document.getElementById('adm-bank-holder').value = appData?.donate?.bankHolder || "";
 
-                const qrisImg = document.getElementById('pub-qris-img');
-                if(qrisImg) qrisImg.src = appData?.donate?.qrisUrl || "https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg";
+                // Logika Modal Donate Publik
+                const hasQris = appData?.donate?.qrisUrl && appData.donate.qrisUrl.trim() !== "";
+                const hasBank = appData?.donate?.bankName && appData?.donate?.bankAccount;
                 
-                const qrisName = document.getElementById('pub-qris-name');
-                if(qrisName) qrisName.innerText = appData?.donate?.qrisName || "Yayasan Found Us";
-                
+                const qrisContainer = document.getElementById('pub-qris-container');
                 const bankContainer = document.getElementById('pub-bank-container');
-                if(appData?.donate?.bankName && appData?.donate?.bankAccount) {
+                const noDonateMsg = document.getElementById('pub-no-donate');
+
+                // Jika ada QRIS, tampilkan wadahnya. Jika kosong, sembunyikan.
+                if(hasQris) {
+                    qrisContainer.classList.remove('hidden');
+                    document.getElementById('pub-qris-img').src = appData.donate.qrisUrl;
+                    document.getElementById('pub-qris-name').innerText = appData.donate.qrisName || "Yayasan Found Us";
+                } else {
+                    qrisContainer.classList.add('hidden');
+                }
+
+                if(hasBank) {
                     bankContainer.classList.remove('hidden');
                     document.getElementById('pub-bank-name').innerText = appData.donate.bankName;
                     document.getElementById('pub-bank-account').innerText = appData.donate.bankAccount;
                     document.getElementById('pub-bank-holder').innerText = appData.donate.bankHolder;
                 } else { 
                     bankContainer.classList.add('hidden'); 
+                }
+
+                // Jika admin menghapus semua metode pembayaran, tampilkan pesan peringatan
+                if(!hasQris && !hasBank && noDonateMsg) {
+                    noDonateMsg.classList.remove('hidden');
+                } else if(noDonateMsg) {
+                    noDonateMsg.classList.add('hidden');
                 }
 
                 renderContactsUI();
@@ -800,7 +868,7 @@
             document.getElementById('news-title').value = n.title;
             document.getElementById('news-date').value = n.dateRaw || ''; 
             document.getElementById('news-link').value = n.link === '#' ? '' : n.link;
-            if(quill) quill.root.innerHTML = n.content || '';
+            if(quillNews) quillNews.root.innerHTML = n.content || '';
             currentCompressedImage = n.image; 
             
             document.getElementById('upload-status').innerText = "(Gambar lama dipertahankan. Upload baru jika ingin mengganti.)";
@@ -819,7 +887,7 @@
             document.getElementById('news-img-file').value = '';
             document.getElementById('upload-status').innerText = '';
             document.getElementById('news-link').value = '';
-            if(quill) quill.setContents([]); 
+            if(quillNews) quillNews.setContents([]); 
             currentCompressedImage = null; 
             
             const btn = document.getElementById('btn-add-news');
@@ -834,10 +902,10 @@
             const dateRaw = document.getElementById('news-date').value;
             const dateFormatted = formatToIndonesianDate(dateRaw); 
             const link = document.getElementById('news-link').value.trim() || '#';
-            const contentHTML = quill ? quill.root.innerHTML : ''; 
+            const contentHTML = quillNews ? quillNews.root.innerHTML : ''; 
             const finalImage = currentCompressedImage || 'https://images.unsplash.com/photo-1577896851231-70ef18881754?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80';
             
-            if(!title || (quill && quill.getText().trim().length === 0)) return alert("Judul dan Isi Berita wajib diisi!");
+            if(!title || (quillNews && quillNews.getText().trim().length === 0)) return alert("Judul dan Isi Berita wajib diisi!");
             
             if (editingNewsIndex >= 0) {
                 appData.news[editingNewsIndex] = { title, date: dateFormatted, dateRaw, image: finalImage, link, content: contentHTML };
@@ -901,6 +969,7 @@
             window.scrollTo(0,0);
         }
 
+        // JALANKAN SAAT HALAMAN DIBUKA
         document.addEventListener('DOMContentLoaded', () => {
             fetchMasterDataFromDB(); 
         });
