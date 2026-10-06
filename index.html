@@ -311,7 +311,9 @@
                             <option value="tiktok">TikTok</option>
                         </select>
                         <input type="text" id="contact-link" placeholder="No. WA / URL / Email" class="flex-1 border border-gray-300 rounded p-2 text-sm min-w-[150px]">
-                        <button type="button" onclick="addContactUI()" class="bg-blue-600 text-white px-3 py-2 rounded text-sm hover:bg-blue-700 font-medium">Tambah</button>
+                        
+                        <button type="button" id="btn-add-contact" onclick="addContactUI()" class="bg-blue-600 text-white px-3 py-2 rounded text-sm hover:bg-blue-700 font-medium transition">Tambah</button>
+                        <button type="button" id="btn-cancel-contact" onclick="cancelEditContact()" class="hidden bg-gray-500 text-white px-3 py-2 rounded text-sm hover:bg-gray-600 font-medium transition">Batal</button>
                     </div>
 
                     <div id="admin-contact-list" class="space-y-2 border border-gray-100 p-3 rounded bg-gray-50 min-h-[100px] max-h-[250px] overflow-y-auto"></div>
@@ -322,7 +324,7 @@
                     <h2 class="text-lg font-bold text-primary mb-4 border-b pb-2">Edit: News & Milestones</h2>
                     
                     <div class="bg-gray-50 p-4 border border-gray-200 rounded mb-6">
-                        <h3 class="font-bold text-sm text-gray-800 mb-3">Tambah Berita Baru</h3>
+                        <h3 class="font-bold text-sm text-gray-800 mb-3">Formulir Berita</h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
                             <div>
                                 <label class="block text-xs font-medium text-gray-700 mb-1">Judul Berita</label>
@@ -349,9 +351,14 @@
                             <div id="editor-container" style="height: 150px;"></div>
                         </div>
                         
-                        <button type="button" onclick="addNewsUI()" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded text-sm hover:bg-blue-700 font-medium w-full md:w-auto">
-                            + Tambah Berita Ke Daftar
-                        </button>
+                        <div class="flex flex-wrap gap-2 mt-4">
+                            <button type="button" id="btn-add-news" onclick="addNewsUI()" class="bg-blue-600 text-white px-4 py-2 rounded text-sm hover:bg-blue-700 font-medium transition">
+                                + Tambah Berita Ke Daftar
+                            </button>
+                            <button type="button" id="btn-cancel-news" onclick="cancelEditNews()" class="hidden bg-gray-500 text-white px-4 py-2 rounded text-sm hover:bg-gray-600 font-medium transition">
+                                Batal Edit
+                            </button>
+                        </div>
                     </div>
 
                     <h3 class="font-bold text-sm text-gray-800 mb-2">Daftar Berita Saat Ini</h3>
@@ -413,7 +420,7 @@
                 {
                     title: "Langkah Awal Menuju NGO Internasional",
                     date: "Oct 10, 2026",
-                    content: "Membuka babak baru dalam pembentukan struktur organisasi dan pemetaan wilayah kerja binaan di Jakarta.",
+                    content: "<p>Membuka babak baru dalam pembentukan struktur organisasi dan pemetaan wilayah kerja binaan di Jakarta.</p>",
                     image: "https://images.unsplash.com/photo-1577896851231-70ef18881754?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
                     link: "#"
                 }
@@ -431,8 +438,11 @@
             'tiktok': { class: 'fab fa-tiktok', color: 'text-gray-400 hover:text-white' }
         };
 
+        // --- STATE EDITING ---
+        let editingContactIndex = -1;
+        let editingNewsIndex = -1;
+
         // --- 2. FUNGSI IMAGE COMPRESSOR ---
-        // Mengubah gambar menjadi Base64 dan mengkompres ukurannya
         function compressImage(file) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
@@ -440,7 +450,7 @@
                     const img = new Image();
                     img.onload = function() {
                         const canvas = document.createElement('canvas');
-                        const MAX_WIDTH = 800; // Resize maksimal 800px lebarnya
+                        const MAX_WIDTH = 800;
                         let width = img.width;
                         let height = img.height;
 
@@ -454,7 +464,6 @@
                         const ctx = canvas.getContext('2d');
                         ctx.drawImage(img, 0, 0, width, height);
                         
-                        // Kualitas kompresi 0.7 (70%) format JPEG
                         const dataUrl = canvas.toDataURL('image/jpeg', 0.7); 
                         resolve(dataUrl);
                     }
@@ -465,10 +474,8 @@
             });
         }
 
-        // Variabel global untuk menyimpan base64 gambar yang sedang diupload
         let currentCompressedImage = null;
 
-        // Listener saat admin memilih gambar berita
         document.addEventListener('DOMContentLoaded', () => {
             const fileInput = document.getElementById('news-img-file');
             const statusText = document.getElementById('upload-status');
@@ -493,8 +500,6 @@
         // --- 3. FUNGSI SHARE LINK ---
         function shareNews(title) {
             const shareUrl = window.location.href.split('#')[0] + '#news';
-            
-            // Gunakan Native Web Share API jika didukung (misal di HP)
             if (navigator.share) {
                 navigator.share({
                     title: 'Found Us News: ' + title,
@@ -502,7 +507,6 @@
                     url: shareUrl
                 }).catch(err => console.log('Error sharing:', err));
             } else {
-                // Fallback: Copy link ke clipboard untuk laptop/desktop
                 navigator.clipboard.writeText(shareUrl).then(() => {
                     alert('Tautan berita berhasil disalin ke clipboard!');
                 }).catch(err => {
@@ -548,6 +552,7 @@
             renderNewsUI();
         }
 
+        // === FITUR KONTAK ===
         function renderContactsUI() {
             const adminCont = document.getElementById('admin-contact-list');
             adminCont.innerHTML = '';
@@ -556,7 +561,10 @@
                 adminCont.innerHTML += `
                     <div class="flex justify-between items-center bg-white p-2 border border-gray-200 rounded">
                         <div class="flex items-center gap-3 text-sm"><i class="${iconInfo.class} text-gray-600 text-lg"></i><span>${contact.link}</span></div>
-                        <button onclick="removeContact(${idx})" class="text-red-500 hover:text-red-700"><i class="fas fa-trash"></i></button>
+                        <div class="flex gap-2">
+                            <button onclick="editContact(${idx})" class="text-blue-500 hover:text-blue-700" title="Edit Kontak"><i class="fas fa-edit"></i></button>
+                            <button onclick="removeContact(${idx})" class="text-red-500 hover:text-red-700" title="Hapus Kontak"><i class="fas fa-trash"></i></button>
+                        </div>
                     </div>`;
             });
             const pubCont = document.getElementById('public-contacts');
@@ -566,18 +574,50 @@
                 pubCont.innerHTML += `<a href="${contact.link}" target="_blank" class="${iconInfo.color} text-2xl transition transform hover:scale-110"><i class="${iconInfo.class}"></i></a>`;
             });
         }
+
+        function editContact(idx) {
+            editingContactIndex = idx;
+            const contact = appData.contacts[idx];
+            document.getElementById('contact-platform').value = contact.platform;
+            document.getElementById('contact-link').value = contact.link;
+            
+            const btn = document.getElementById('btn-add-contact');
+            btn.innerText = "Update";
+            btn.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+            btn.classList.add('bg-green-600', 'hover:bg-green-700');
+            document.getElementById('btn-cancel-contact').classList.remove('hidden');
+        }
+
+        function cancelEditContact() {
+            editingContactIndex = -1;
+            document.getElementById('contact-link').value = '';
+            
+            const btn = document.getElementById('btn-add-contact');
+            btn.innerText = "Tambah";
+            btn.classList.remove('bg-green-600', 'hover:bg-green-700');
+            btn.classList.add('bg-blue-600', 'hover:bg-blue-700');
+            document.getElementById('btn-cancel-contact').classList.add('hidden');
+        }
+
         function addContactUI() {
             const platform = document.getElementById('contact-platform').value;
             let link = document.getElementById('contact-link').value.trim();
             if(!link) return alert("Link tidak boleh kosong!");
             if(platform === 'whatsapp' && !link.includes('wa.me')) link = `https://wa.me/${link}`;
             if(platform === 'email' && !link.includes('mailto:')) link = `mailto:${link}`;
-            appData.contacts.push({ platform, link });
-            document.getElementById('contact-link').value = '';
+            
+            if (editingContactIndex >= 0) {
+                appData.contacts[editingContactIndex] = { platform, link };
+                cancelEditContact(); 
+            } else {
+                appData.contacts.push({ platform, link });
+                document.getElementById('contact-link').value = '';
+            }
             renderContactsUI();
         }
         function removeContact(idx) { appData.contacts.splice(idx, 1); renderContactsUI(); }
 
+        // === FITUR BERITA (NEWS) ===
         function renderNewsUI() {
             const adminNews = document.getElementById('admin-news-list');
             adminNews.innerHTML = '';
@@ -591,7 +631,10 @@
                                 <p class="text-xs text-gray-500">Date: ${n.date}</p>
                             </div>
                         </div>
-                        <button onclick="removeNews(${idx})" class="text-red-500 hover:text-red-700 bg-red-50 p-2 rounded"><i class="fas fa-trash"></i></button>
+                        <div class="flex gap-2">
+                            <button onclick="editNews(${idx})" class="text-blue-500 hover:text-blue-700 bg-blue-50 p-2 rounded" title="Edit Berita"><i class="fas fa-edit"></i></button>
+                            <button onclick="removeNews(${idx})" class="text-red-500 hover:text-red-700 bg-red-50 p-2 rounded" title="Hapus Berita"><i class="fas fa-trash"></i></button>
+                        </div>
                     </div>`;
             });
             
@@ -604,11 +647,9 @@
                         <div class="p-6 flex-1 flex flex-col">
                             <span class="text-secondary text-xs font-bold uppercase tracking-wider">${n.date}</span>
                             <h3 class="text-xl font-bold text-primary mt-2 mb-3">${n.title}</h3>
-                            <!-- Menggunakan ql-editor-public agar format teks dari Quill terbaca dengan baik -->
                             <div class="text-gray-600 text-sm mb-4 flex-1 ql-editor-public">${n.content}</div>
                             <div class="flex justify-between items-center mt-auto border-t border-gray-200 pt-4">
                                 <a href="${n.link}" class="text-primary font-semibold text-sm hover:underline">Read More</a>
-                                <!-- Tombol Share -->
                                 <button onclick="shareNews('${n.title.replace(/'/g, "\\'")}')" class="text-gray-500 hover:text-blue-500 transition" title="Bagikan Berita">
                                     <i class="fas fa-share-alt"></i> Share
                                 </button>
@@ -617,30 +658,61 @@
                     </div>`;
             });
         }
-        function addNewsUI() {
-            const title = document.getElementById('news-title').value.trim();
-            const date = document.getElementById('news-date').value.trim();
-            const link = document.getElementById('news-link').value.trim() || '#';
+
+        function editNews(idx) {
+            editingNewsIndex = idx;
+            const n = appData.news[idx];
             
-            // Ambil format HTML langsung dari editor Quill
-            const contentHTML = quill.root.innerHTML; 
+            document.getElementById('news-title').value = n.title;
+            document.getElementById('news-date').value = n.date;
+            document.getElementById('news-link').value = n.link === '#' ? '' : n.link;
+            quill.root.innerHTML = n.content;
+            currentCompressedImage = n.image; 
             
-            // Gunakan gambar hasil kompresi (base64) atau fallback ke placeholder
-            const finalImage = currentCompressedImage || 'https://images.unsplash.com/photo-1577896851231-70ef18881754?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80';
+            document.getElementById('upload-status').innerText = "(Gambar lama dipertahankan. Upload file baru jika ingin mengganti.)";
             
-            if(!title || quill.getText().trim().length === 0) return alert("Judul dan Isi Berita wajib diisi!");
+            const btn = document.getElementById('btn-add-news');
+            btn.innerText = "Update Berita";
+            btn.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+            btn.classList.add('bg-green-600', 'hover:bg-green-700');
+            document.getElementById('btn-cancel-news').classList.remove('hidden');
             
-            appData.news.unshift({ title, date, image: finalImage, link, content: contentHTML });
-            
-            // Reset form
+            document.getElementById('news-title').scrollIntoView({behavior: "smooth", block: "center"});
+        }
+
+        function cancelEditNews() {
+            editingNewsIndex = -1;
             document.getElementById('news-title').value = '';
             document.getElementById('news-date').value = '';
             document.getElementById('news-img-file').value = '';
             document.getElementById('upload-status').innerText = '';
             document.getElementById('news-link').value = '';
-            quill.setContents([]); // Kosongkan editor
-            currentCompressedImage = null; // Reset image cache
+            quill.setContents([]); 
+            currentCompressedImage = null; 
             
+            const btn = document.getElementById('btn-add-news');
+            btn.innerText = "+ Tambah Berita Ke Daftar";
+            btn.classList.remove('bg-green-600', 'hover:bg-green-700');
+            btn.classList.add('bg-blue-600', 'hover:bg-blue-700');
+            document.getElementById('btn-cancel-news').classList.add('hidden');
+        }
+
+        function addNewsUI() {
+            const title = document.getElementById('news-title').value.trim();
+            const date = document.getElementById('news-date').value.trim();
+            const link = document.getElementById('news-link').value.trim() || '#';
+            const contentHTML = quill.root.innerHTML; 
+            const finalImage = currentCompressedImage || 'https://images.unsplash.com/photo-1577896851231-70ef18881754?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80';
+            
+            if(!title || quill.getText().trim().length === 0) return alert("Judul dan Isi Berita wajib diisi!");
+            
+            if (editingNewsIndex >= 0) {
+                appData.news[editingNewsIndex] = { title, date, image: finalImage, link, content: contentHTML };
+                cancelEditNews(); 
+            } else {
+                appData.news.unshift({ title, date, image: finalImage, link, content: contentHTML });
+                cancelEditNews(); 
+            }
             renderNewsUI();
         }
         function removeNews(idx) { appData.news.splice(idx, 1); renderNewsUI(); }
