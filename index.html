@@ -36,7 +36,9 @@
         </button>
     </div>
 
-    <!-- 1. PUBLIC WEBSITE VIEW -->
+    <!-- ========================================== -->
+    <!-- 1. PUBLIC WEBSITE VIEW                     -->
+    <!-- ========================================== -->
     <div id="public-view" class="block">
         
         <!-- Navigation -->
@@ -83,11 +85,9 @@
             <div class="max-w-4xl mx-auto px-4 text-center">
                 <h2 class="text-3xl font-bold text-primary mb-6">About Us</h2>
                 <div class="w-24 h-1 bg-secondary mx-auto mb-8"></div>
-                <p class="text-gray-600 text-lg leading-relaxed mb-6">
-                    Setiap anak berhak memupuk keyakinan untuk mendapatkan masa depan yang lebih baik. <strong>Found Us</strong> berusaha untuk menjaga itu, sebuah asa yang memancar dari binar mata anak-anak miskin kota. Meski mereka tumbuh di antara lorong-lorong muram Jakarta.
-                </p>
-                <p class="text-gray-600 text-lg leading-relaxed">
-                    Atas dasar itu, kami bertekad untuk menemui dan menemani mereka demi menjaga nyala harapannya melalui penyediaan ruang belajar dan wadah pengembangan potensi yang selama ini belum didapati secara maksimal.
+                <!-- ID public-about-text ditambahkan di sini -->
+                <p id="public-about-text" class="text-gray-600 text-lg leading-relaxed mb-6 whitespace-pre-line">
+                    Memuat data...
                 </p>
             </div>
         </section>
@@ -263,7 +263,9 @@
 
     </div>
 
-    <!-- 2. ADMIN PANEL VIEW -->
+    <!-- ========================================== -->
+    <!-- 2. ADMIN PANEL VIEW                        -->
+    <!-- ========================================== -->
     <div id="admin-view" class="hidden min-h-screen bg-gray-100 flex">
         
         <!-- Sidebar -->
@@ -286,7 +288,10 @@
         <main class="ml-64 flex-1 p-8">
             <div class="flex justify-between items-center mb-8">
                 <h1 class="text-2xl font-bold text-gray-800">Dashboard Editor</h1>
-                <button class="bg-green-600 text-white px-4 py-2 rounded shadow hover:bg-green-700 text-sm font-medium"><i class="fas fa-save mr-2"></i>Save Changes</button>
+                <!-- Event onclick saveAboutText() ditambahkan ke tombol ini -->
+                <button onclick="saveAboutText()" class="bg-green-600 text-white px-4 py-2 rounded shadow hover:bg-green-700 text-sm font-medium">
+                    <i class="fas fa-save mr-2"></i>Save Changes
+                </button>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 pb-20">
@@ -294,7 +299,8 @@
                 <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
                     <h2 class="text-lg font-bold text-primary mb-4 border-b pb-2">Edit: About Us</h2>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Content Text</label>
-                    <textarea rows="5" class="w-full border border-gray-300 rounded p-2 text-sm focus:ring-primary focus:border-primary">Setiap anak berhak memupuk keyakinan untuk mendapatkan masa depan yang lebih baik. Found Us berusaha untuk menjaga itu...</textarea>
+                    <!-- ID admin-about-input ditambahkan di sini -->
+                    <textarea id="admin-about-input" rows="5" class="w-full border border-gray-300 rounded p-2 text-sm focus:ring-primary focus:border-primary">Memuat data...</textarea>
                 </div>
 
                 <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
@@ -343,7 +349,9 @@
         </main>
     </div>
 
+    <!-- Scripts for Logic & API Calls -->
     <script>
+        // Modal & Navigation Logic
         function toggleQRIS() {
             const modal = document.getElementById('qrisModal');
             if (modal.classList.contains('hidden')) {
@@ -366,6 +374,54 @@
             document.getElementById('admin-view').classList.add('flex');
             window.scrollTo(0,0);
         }
+
+        // ==========================================
+        // DATABASE CRUD LOGIC (Turso API Call)
+        // ==========================================
+
+        // 1. Fungsi READ: Memuat data saat halaman dibuka
+        async function loadAboutText() {
+            try {
+                const response = await fetch('/api/get-about');
+                if (!response.ok) return; // Abaikan jika API belum dideploy di Vercel
+                
+                const result = await response.json();
+                if (result.success) {
+                    document.getElementById('public-about-text').innerText = result.data;
+                    document.getElementById('admin-about-input').value = result.data;
+                }
+            } catch (error) {
+                console.error("Gagal memuat data dari database:", error);
+            }
+        }
+
+        // 2. Fungsi UPDATE: Menyimpan data ke database saat tombol diklik
+        async function saveAboutText() {
+            const updatedText = document.getElementById('admin-about-input').value;
+            
+            try {
+                const response = await fetch('/api/update-about', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ newText: updatedText })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert('Data About Us berhasil disimpan!');
+                    loadAboutText(); // Refresh data otomatis setelah disimpan
+                } else {
+                    alert('Gagal menyimpan data ke database.');
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                alert('Terjadi kesalahan. Pastikan API Vercel sudah terdeploy dengan benar.');
+            }
+        }
+
+        // Jalankan fungsi load data saat halaman pertama kali dimuat
+        document.addEventListener('DOMContentLoaded', loadAboutText);
     </script>
 </body>
 </html>
