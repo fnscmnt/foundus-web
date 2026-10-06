@@ -183,6 +183,7 @@
             </div>
         </footer>
 
+        <!-- PUBLIC: QRIS & BANK MODAL -->
         <div id="qrisModal" class="fixed inset-0 bg-black bg-opacity-70 z-50 hidden flex items-center justify-center backdrop-blur-sm transition-opacity">
             <div class="bg-white rounded-xl shadow-2xl max-w-md w-full mx-4 overflow-hidden relative max-h-[90vh] overflow-y-auto">
                 <button onclick="toggleQRIS()" class="absolute top-3 right-3 text-gray-400 hover:text-gray-800 text-2xl leading-none font-bold z-10">&times;</button>
@@ -220,7 +221,6 @@
             </div>
             <nav class="flex-1 p-4 space-y-2">
                 <a href="#" class="block px-4 py-3 bg-blue-900 rounded text-sm font-medium"><i class="fas fa-home mr-3"></i> Dashboard</a>
-                
                 <div class="pt-8 border-t border-blue-800 mt-8">
                     <button onclick="showPublic()" class="w-full bg-secondary text-primary px-4 py-3 rounded text-sm font-bold shadow hover:bg-yellow-400 flex items-center justify-center">
                         <i class="fas fa-globe mr-2"></i> View Public Site
@@ -384,11 +384,13 @@
     <script>
         let quill;
         document.addEventListener('DOMContentLoaded', () => {
-            quill = new Quill('#editor-container', {
-                theme: 'snow',
-                placeholder: 'Tulis isi berita di sini...',
-                modules: { toolbar: [ ['bold', 'italic', 'underline', 'strike'], [{ 'list': 'ordered'}, { 'list': 'bullet' }], [{ 'header': [1, 2, 3, false] }], ['link'] ] }
-            });
+            try {
+                quill = new Quill('#editor-container', {
+                    theme: 'snow',
+                    placeholder: 'Tulis isi berita di sini...',
+                    modules: { toolbar: [ ['bold', 'italic', 'underline', 'strike'], [{ 'list': 'ordered'}, { 'list': 'bullet' }], [{ 'header': [1, 2, 3, false] }], ['link'] ] }
+                });
+            } catch (e) { console.error("Editor gagal dimuat:", e); }
         });
 
         function formatToIndonesianDate(dateString) {
@@ -399,7 +401,7 @@
         }
 
         // ==========================================
-        // 1. MASTER APP DATA (KOPER DATA UTAMA)
+        // 1. MASTER APP DATA
         // ==========================================
         let appData = {
             aboutText: "Setiap anak berhak memupuk keyakinan untuk mendapatkan masa depan yang lebih baik. Found Us berusaha untuk menjaga itu, sebuah asa yang memancar dari binar mata anak-anak miskin kota. Meski mereka tumbuh di antara lorong-lorong muram Jakarta.\n\nAtas dasar itu, kami bertekad untuk menemui dan menemani mereka demi menjaga nyala harapannya melalui penyediaan ruang belajar dan wadah pengembangan potensi yang selama ini belum didapati secara maksimal.",
@@ -449,7 +451,7 @@
         let editingNewsIndex = -1;
 
         // ==========================================
-        // 2. KONEKSI DATABASE (VERCEL -> TURSO)
+        // 2. KONEKSI DATABASE
         // ==========================================
         async function fetchMasterDataFromDB() {
             try {
@@ -457,11 +459,23 @@
                 if (response.ok) {
                     const result = await response.json();
                     if (result.success && result.data) {
-                        appData = JSON.parse(result.data);
+                        const dbData = JSON.parse(result.data);
+                        // Fitur Penyelamat: Menambal data kosong agar UI tidak crash
+                        if(dbData.aboutText) appData.aboutText = dbData.aboutText;
+                        if(dbData.cta) appData.cta = { ...appData.cta, ...dbData.cta };
+                        if(dbData.donate) appData.donate = { ...appData.donate, ...dbData.donate };
+                        if(dbData.contacts) appData.contacts = dbData.contacts;
+                        if(dbData.news) appData.news = dbData.news;
+                        if(dbData.backgrounds) {
+                            appData.backgrounds.hero = dbData.backgrounds.hero || [];
+                            appData.backgrounds.about = dbData.backgrounds.about || [];
+                            appData.backgrounds.impact = dbData.backgrounds.impact || [];
+                            appData.backgrounds.news = dbData.backgrounds.news || [];
+                        }
                     }
                 }
             } catch (error) {
-                console.log("Offline mode: Database belum terhubung.");
+                console.log("Database belum terhubung. Menggunakan data default.");
             }
             renderAllUI();
         }
@@ -493,10 +507,10 @@
                 if (result.success) {
                     alert(`✅ Mantap! Perubahan pada [${sectionName}] berhasil disimpan permanen ke server.`);
                 } else {
-                    alert(`⚠ Gagal simpan ke server. Namun [${sectionName}] sudah di-update di pratinjau browser Anda.`);
+                    alert(`⚠ Gagal simpan ke server. Namun [${sectionName}] sudah diperbarui di pratinjau Anda.`);
                 }
             } catch (error) {
-                alert(`ℹ️ Mode Offline: Perubahan pada [${sectionName}] diterapkan di layar Anda, namun belum tersimpan permanen di database.`);
+                alert(`ℹ️ Mode Simulasi: Perubahan pada [${sectionName}] diterapkan di layar, namun belum tersimpan permanen di database.`);
             }
         }
 
@@ -628,53 +642,63 @@
         }
 
         // ==========================================
-        // 4. RENDER UI FUNCTIONS
+        // 4. RENDER UI FUNCTIONS (DENGAN SAFE FALLBACK)
         // ==========================================
         function renderAllUI() {
-            document.getElementById('admin-about-input').value = appData.aboutText || "";
-            document.getElementById('public-about-text').innerText = appData.aboutText || "";
+            try {
+                document.getElementById('admin-about-input').value = appData?.aboutText || "";
+                document.getElementById('public-about-text').innerText = appData?.aboutText || "";
 
-            document.getElementById('adm-part-title').value = appData.cta.partnerTitle;
-            document.getElementById('adm-part-desc').value = appData.cta.partnerDesc;
-            document.getElementById('adm-part-link').value = appData.cta.partnerLink;
-            document.getElementById('adm-don-title').value = appData.cta.donateTitle;
-            document.getElementById('adm-don-desc').value = appData.cta.donateDesc;
-            
-            document.getElementById('pub-partner-title').innerText = appData.cta.partnerTitle;
-            document.getElementById('pub-partner-desc').innerText = appData.cta.partnerDesc;
-            document.getElementById('pub-partner-link').href = appData.cta.partnerLink;
-            document.getElementById('pub-donate-title').innerText = appData.cta.donateTitle;
-            document.getElementById('pub-donate-desc').innerText = appData.cta.donateDesc;
+                document.getElementById('adm-part-title').value = appData?.cta?.partnerTitle || "";
+                document.getElementById('adm-part-desc').value = appData?.cta?.partnerDesc || "";
+                document.getElementById('adm-part-link').value = appData?.cta?.partnerLink || "";
+                document.getElementById('adm-don-title').value = appData?.cta?.donateTitle || "";
+                document.getElementById('adm-don-desc').value = appData?.cta?.donateDesc || "";
+                
+                document.getElementById('pub-partner-title').innerText = appData?.cta?.partnerTitle || "Partner With Us";
+                document.getElementById('pub-partner-desc').innerText = appData?.cta?.partnerDesc || "";
+                document.getElementById('pub-partner-link').href = appData?.cta?.partnerLink || "#";
+                document.getElementById('pub-donate-title').innerText = appData?.cta?.donateTitle || "Support Us";
+                document.getElementById('pub-donate-desc').innerText = appData?.cta?.donateDesc || "";
 
-            document.getElementById('adm-qris-url').value = appData.donate.qrisUrl;
-            document.getElementById('adm-qris-name').value = appData.donate.qrisName;
-            document.getElementById('adm-bank-name').value = appData.donate.bankName;
-            document.getElementById('adm-bank-acc').value = appData.donate.bankAccount;
-            document.getElementById('adm-bank-holder').value = appData.donate.bankHolder;
+                document.getElementById('adm-qris-url').value = appData?.donate?.qrisUrl || "";
+                document.getElementById('adm-qris-name').value = appData?.donate?.qrisName || "";
+                document.getElementById('adm-bank-name').value = appData?.donate?.bankName || "";
+                document.getElementById('adm-bank-acc').value = appData?.donate?.bankAccount || "";
+                document.getElementById('adm-bank-holder').value = appData?.donate?.bankHolder || "";
 
-            document.getElementById('pub-qris-img').src = appData.donate.qrisUrl;
-            document.getElementById('pub-qris-name').innerText = appData.donate.qrisName;
-            
-            const bankContainer = document.getElementById('pub-bank-container');
-            if(appData.donate.bankName && appData.donate.bankAccount) {
-                bankContainer.classList.remove('hidden');
-                document.getElementById('pub-bank-name').innerText = appData.donate.bankName;
-                document.getElementById('pub-bank-account').innerText = appData.donate.bankAccount;
-                document.getElementById('pub-bank-holder').innerText = appData.donate.bankHolder;
-            } else { bankContainer.classList.add('hidden'); }
+                const qrisImg = document.getElementById('pub-qris-img');
+                if(qrisImg) qrisImg.src = appData?.donate?.qrisUrl || "https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg";
+                
+                const qrisName = document.getElementById('pub-qris-name');
+                if(qrisName) qrisName.innerText = appData?.donate?.qrisName || "Yayasan Found Us";
+                
+                const bankContainer = document.getElementById('pub-bank-container');
+                if(appData?.donate?.bankName && appData?.donate?.bankAccount) {
+                    bankContainer.classList.remove('hidden');
+                    document.getElementById('pub-bank-name').innerText = appData.donate.bankName;
+                    document.getElementById('pub-bank-account').innerText = appData.donate.bankAccount;
+                    document.getElementById('pub-bank-holder').innerText = appData.donate.bankHolder;
+                } else { 
+                    bankContainer.classList.add('hidden'); 
+                }
 
-            renderContactsUI();
-            renderNewsUI();
-            renderAdminBackgrounds();
-            runSlideshows(); 
+                renderContactsUI();
+                renderNewsUI();
+                renderAdminBackgrounds();
+                runSlideshows(); 
+            } catch (err) {
+                console.error("Gagal me-render UI:", err);
+            }
         }
 
         // --- FITUR KONTAK ---
         function renderContactsUI() {
+            const contacts = appData?.contacts || [];
             const adminCont = document.getElementById('admin-contact-list');
             adminCont.innerHTML = '';
-            appData.contacts.forEach((contact, idx) => {
-                const iconInfo = iconMap[contact.platform];
+            contacts.forEach((contact, idx) => {
+                const iconInfo = iconMap[contact.platform] || iconMap['email'];
                 adminCont.innerHTML += `
                     <div class="flex justify-between items-center bg-white p-2 border border-gray-200 rounded">
                         <div class="flex items-center gap-3 text-sm"><i class="${iconInfo.class} text-gray-600 text-lg"></i><span>${contact.link}</span></div>
@@ -686,8 +710,8 @@
             });
             const pubCont = document.getElementById('public-contacts');
             pubCont.innerHTML = '';
-            appData.contacts.forEach(contact => {
-                const iconInfo = iconMap[contact.platform];
+            contacts.forEach(contact => {
+                const iconInfo = iconMap[contact.platform] || iconMap['email'];
                 pubCont.innerHTML += `<a href="${contact.link}" target="_blank" class="${iconInfo.color} text-2xl transition transform hover:scale-110"><i class="${iconInfo.class}"></i></a>`;
             });
         }
@@ -730,16 +754,17 @@
 
         // --- FITUR BERITA (NEWS) ---
         function renderNewsUI() {
+            const newsList = appData?.news || [];
             const adminNews = document.getElementById('admin-news-list');
             adminNews.innerHTML = '';
-            appData.news.forEach((n, idx) => {
+            newsList.forEach((n, idx) => {
                 adminNews.innerHTML += `
                     <div class="border border-gray-200 p-3 rounded flex justify-between items-center bg-white">
                         <div class="flex gap-4 items-center">
                             <img src="${n.image}" class="w-12 h-12 object-cover rounded">
                             <div>
-                                <p class="font-semibold text-sm text-gray-800">${n.title}</p>
-                                <p class="text-xs text-gray-500">Date: ${n.date}</p>
+                                <p class="font-semibold text-sm text-gray-800">${n.title || ''}</p>
+                                <p class="text-xs text-gray-500">Date: ${n.date || ''}</p>
                             </div>
                         </div>
                         <div class="flex gap-2">
@@ -751,17 +776,18 @@
             
             const pubNews = document.getElementById('public-news-container');
             pubNews.innerHTML = '';
-            appData.news.forEach(n => {
+            newsList.forEach(n => {
+                const safeTitle = (n.title || '').replace(/'/g, "\\'");
                 pubNews.innerHTML += `
                     <div class="bg-gray-50 rounded-lg overflow-hidden shadow-sm flex flex-col relative z-10 border border-gray-100">
                         <img src="${n.image}" alt="News Image" class="w-full h-48 object-cover">
                         <div class="p-6 flex-1 flex flex-col bg-white">
-                            <span class="text-secondary text-xs font-bold uppercase tracking-wider">${n.date}</span>
-                            <h3 class="text-xl font-bold text-primary mt-2 mb-3">${n.title}</h3>
-                            <div class="text-gray-600 text-sm mb-4 flex-1 ql-editor-public">${n.content}</div>
+                            <span class="text-secondary text-xs font-bold uppercase tracking-wider">${n.date || ''}</span>
+                            <h3 class="text-xl font-bold text-primary mt-2 mb-3">${n.title || ''}</h3>
+                            <div class="text-gray-600 text-sm mb-4 flex-1 ql-editor-public">${n.content || ''}</div>
                             <div class="flex justify-between items-center mt-auto border-t border-gray-200 pt-4">
-                                <a href="${n.link}" class="text-primary font-semibold text-sm hover:underline">Read More</a>
-                                <button onclick="shareNews('${n.title.replace(/'/g, "\\'")}')" class="text-gray-500 hover:text-blue-500 transition" title="Bagikan Berita"><i class="fas fa-share-alt"></i> Share</button>
+                                <a href="${n.link || '#'}" class="text-primary font-semibold text-sm hover:underline">Read More</a>
+                                <button onclick="shareNews('${safeTitle}')" class="text-gray-500 hover:text-blue-500 transition" title="Bagikan Berita"><i class="fas fa-share-alt"></i> Share</button>
                             </div>
                         </div>
                     </div>`;
@@ -774,7 +800,7 @@
             document.getElementById('news-title').value = n.title;
             document.getElementById('news-date').value = n.dateRaw || ''; 
             document.getElementById('news-link').value = n.link === '#' ? '' : n.link;
-            quill.root.innerHTML = n.content;
+            if(quill) quill.root.innerHTML = n.content || '';
             currentCompressedImage = n.image; 
             
             document.getElementById('upload-status').innerText = "(Gambar lama dipertahankan. Upload baru jika ingin mengganti.)";
@@ -793,7 +819,8 @@
             document.getElementById('news-img-file').value = '';
             document.getElementById('upload-status').innerText = '';
             document.getElementById('news-link').value = '';
-            quill.setContents([]); currentCompressedImage = null; 
+            if(quill) quill.setContents([]); 
+            currentCompressedImage = null; 
             
             const btn = document.getElementById('btn-add-news');
             btn.innerText = "+ Tambah Berita";
@@ -807,10 +834,10 @@
             const dateRaw = document.getElementById('news-date').value;
             const dateFormatted = formatToIndonesianDate(dateRaw); 
             const link = document.getElementById('news-link').value.trim() || '#';
-            const contentHTML = quill.root.innerHTML; 
+            const contentHTML = quill ? quill.root.innerHTML : ''; 
             const finalImage = currentCompressedImage || 'https://images.unsplash.com/photo-1577896851231-70ef18881754?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80';
             
-            if(!title || quill.getText().trim().length === 0) return alert("Judul dan Isi Berita wajib diisi!");
+            if(!title || (quill && quill.getText().trim().length === 0)) return alert("Judul dan Isi Berita wajib diisi!");
             
             if (editingNewsIndex >= 0) {
                 appData.news[editingNewsIndex] = { title, date: dateFormatted, dateRaw, image: finalImage, link, content: contentHTML };
@@ -849,3 +876,34 @@
             if (!password) { btnText.innerText = "Admin Access"; return; }
 
             try {
+                const response = await fetch('/api/verify-password', {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password })
+                });
+                if ((await response.json()).success) { goAdmin(); } else { alert("Password salah!"); }
+            } catch (error) {
+                if(password === "admin123") { goAdmin(); } else { alert("Password Salah!"); }
+            }
+            btnText.innerText = "Admin Access";
+        }
+
+        function goAdmin() {
+            document.getElementById('public-view').classList.add('hidden');
+            document.getElementById('admin-view').classList.remove('hidden');
+            document.getElementById('admin-view').classList.add('flex');
+            window.scrollTo(0,0);
+        }
+
+        function showPublic() {
+            document.getElementById('public-view').classList.remove('hidden');
+            document.getElementById('public-view').classList.add('block');
+            document.getElementById('admin-view').classList.add('hidden');
+            window.scrollTo(0,0);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchMasterDataFromDB(); 
+        });
+    </script>
+</body>
+</html>
