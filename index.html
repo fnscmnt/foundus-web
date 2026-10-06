@@ -8,6 +8,8 @@
     <link rel="icon" type="image/jpeg" href="logo.jpeg">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Quill.js Rich Text Editor CSS -->
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 
     <script>
@@ -26,7 +28,7 @@
         .ql-editor-public ol { list-style-type: decimal; padding-left: 1.5rem; margin-bottom: 0.5rem; }
         .bg-transition { transition: background-image 1.5s ease-in-out; }
         
-        /* Mendukung fitur Rata Kanan, Kiri, Tengah, Justify */
+        /* Mendukung fitur Rata Kanan, Kiri, Tengah, Justify dari Quill */
         .ql-align-center { text-align: center; }
         .ql-align-justify { text-align: justify; }
         .ql-align-right { text-align: right; }
@@ -84,7 +86,7 @@
                 <h2 class="text-3xl font-bold text-primary mb-6">About Us</h2>
                 <div class="w-24 h-1 bg-secondary mx-auto mb-8"></div>
                 <div class="bg-white/80 p-8 rounded-2xl shadow-sm backdrop-blur-sm border border-gray-100">
-                    <!-- Text About Us memanggil ql-editor-public agar format dari Editor berfungsi -->
+                    <!-- Text About Us memanggil ql-editor-public agar format dari Editor (Center, dll) berfungsi -->
                     <div id="public-about-text" class="text-gray-700 text-lg leading-relaxed whitespace-pre-line ql-editor-public">Memuat data...</div>
                 </div>
             </div>
@@ -151,9 +153,11 @@
                         <div class="p-10 md:p-14 bg-blue-900 flex flex-col justify-center items-center md:items-start text-center md:text-left">
                             <h3 id="pub-donate-title" class="text-2xl md:text-3xl font-bold text-secondary mb-4">Support Our Cause</h3>
                             <p id="pub-donate-desc" class="text-gray-200 mb-8">Donasi Anda berarti untuk mendampingi mereka meraih masa depan.</p>
-                            <button onclick="toggleQRIS()" class="bg-secondary text-primary font-bold py-3 px-10 rounded shadow-lg hover:bg-yellow-400 w-full md:w-auto flex items-center justify-center gap-2">
+                            <button onclick="toggleQRIS()" id="btn-donate-trigger" class="bg-secondary text-primary font-bold py-3 px-10 rounded shadow-lg hover:bg-yellow-400 w-full md:w-auto flex items-center justify-center gap-2">
                                 <i class="fas fa-qrcode"></i> Donate Now
                             </button>
+                            <!-- Pesan ini muncul otomatis jika admin mengosongkan QRIS & Rekening -->
+                            <p id="pub-no-donate-btn-msg" class="text-sm text-yellow-300 mt-4 hidden font-medium">Metode donasi sedang tidak tersedia saat ini.</p>
                         </div>
                     </div>
                 </div>
@@ -199,9 +203,6 @@
                 <div class="bg-primary p-4 text-center sticky top-0"><h3 class="text-white font-bold text-lg">Support Found Us</h3></div>
                 
                 <div class="p-8 text-center">
-                    <!-- Kontainer Peringatan Kosong -->
-                    <p id="pub-no-donate" class="text-sm text-red-500 hidden py-4 font-semibold">Metode pembayaran donasi saat ini belum tersedia.</p>
-
                     <!-- Kontainer QRIS -->
                     <div id="pub-qris-container">
                         <p class="text-sm text-gray-600 mb-4">Silakan scan kode QRIS di bawah ini menggunakan aplikasi e-Wallet Anda.</p>
@@ -249,7 +250,7 @@
         <main class="flex-1 p-8 h-screen overflow-y-auto">
             <div class="flex justify-between items-center mb-8 sticky top-0 bg-gray-100 py-4 z-10 border-b border-gray-200">
                 <h1 class="text-2xl font-bold text-gray-800">Dashboard Editor</h1>
-                <button onclick="saveAllToDatabase('Seluruh Website')" class="bg-green-600 text-white px-6 py-2 rounded shadow hover:bg-green-700 text-sm font-bold transition">
+                <button onclick="saveAllToDatabase('Seluruh Data Utama')" class="bg-green-600 text-white px-6 py-2 rounded shadow hover:bg-green-700 text-sm font-bold transition">
                     <i class="fas fa-save mr-2"></i>Save All Changes
                 </button>
             </div>
@@ -330,14 +331,14 @@
                         <h2 class="text-lg font-bold text-primary">Edit: Data Donasi (QRIS & Bank)</h2>
                         <button onclick="saveAllToDatabase('Data Donasi')" class="text-xs bg-green-100 text-green-700 px-3 py-1.5 rounded font-semibold hover:bg-green-200 transition"><i class="fas fa-save mr-1"></i> Save</button>
                     </div>
-                    <p class="text-xs text-gray-500 mb-4">Jika Anda mengosongkan informasi di bawah, fitur donasi tidak akan ditampilkan ke publik.</p>
+                    <p class="text-xs text-gray-500 mb-4">Jika Anda mengosongkan URL QRIS dan Rekening Bank di bawah, fitur donasi akan hilang dari publik.</p>
                     
                     <h3 class="text-sm font-bold text-gray-700 mb-2">QRIS Information</h3>
-                    <input type="text" id="adm-qris-url" placeholder="URL Gambar QRIS" class="w-full border-gray-300 rounded p-2 text-sm mb-2">
+                    <input type="text" id="adm-qris-url" placeholder="URL Gambar QRIS (Kosongkan jika tidak ada)" class="w-full border-gray-300 rounded p-2 text-sm mb-2">
                     <input type="text" id="adm-qris-name" placeholder="Atas Nama (QRIS)" class="w-full border-gray-300 rounded p-2 text-sm mb-6">
                     
                     <h3 class="text-sm font-bold text-gray-700 mb-2">Bank Transfer</h3>
-                    <input type="text" id="adm-bank-name" placeholder="Nama Bank (Cth: BANK MANDIRI)" class="w-full border-gray-300 rounded p-2 text-sm mb-2">
+                    <input type="text" id="adm-bank-name" placeholder="Nama Bank (Kosongkan jika tidak ada)" class="w-full border-gray-300 rounded p-2 text-sm mb-2">
                     <input type="text" id="adm-bank-acc" placeholder="Nomor Rekening" class="w-full border-gray-300 rounded p-2 text-sm mb-2">
                     <input type="text" id="adm-bank-holder" placeholder="Atas Nama (Rekening)" class="w-full border-gray-300 rounded p-2 text-sm">
                 </div>
@@ -409,36 +410,43 @@
     </div>
 
     <!-- Script Utama (Quill Editor & Aplikasi) -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
     <script>
-        let quillNews;
-        let quillAbout;
+        let quillNews = null;
+        let quillAbout = null;
 
-        document.addEventListener('DOMContentLoaded', () => {
-            // Pengaturan Toolbar untuk Editor
+        // ==========================================
+        // 1. Inisialisasi Aman untuk Quill Editor
+        // ==========================================
+        function initQuillEditors() {
             const toolbarOptions = [
                 ['bold', 'italic', 'underline', 'strike'],
                 [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                [{ 'align': [] }], // FITUR ALIGNMENT DITAMBAHKAN DI SINI
+                [{ 'align': [] }], // Fitur Rata Kanan Kiri
                 [{ 'header': [1, 2, 3, false] }],
                 ['link']
             ];
 
             try {
-                // Inisialisasi Editor Berita
-                quillNews = new Quill('#editor-container', {
-                    theme: 'snow',
-                    placeholder: 'Tulis isi berita di sini...',
-                    modules: { toolbar: toolbarOptions }
-                });
-
-                // Inisialisasi Editor About Us
-                quillAbout = new Quill('#about-editor-container', {
-                    theme: 'snow',
-                    placeholder: 'Tulis isi About Us di sini...',
-                    modules: { toolbar: toolbarOptions }
-                });
+                if(!quillNews) {
+                    quillNews = new Quill('#editor-container', {
+                        theme: 'snow',
+                        placeholder: 'Tulis isi berita di sini...',
+                        modules: { toolbar: toolbarOptions }
+                    });
+                }
+                if(!quillAbout) {
+                    quillAbout = new Quill('#about-editor-container', {
+                        theme: 'snow',
+                        placeholder: 'Tulis isi About Us di sini...',
+                        modules: { toolbar: toolbarOptions }
+                    });
+                    if (appData && appData.aboutText) {
+                        quillAbout.root.innerHTML = appData.aboutText;
+                    }
+                }
             } catch (e) { console.error("Editor gagal dimuat:", e); }
-        });
+        }
 
         function formatToIndonesianDate(dateString) {
             if (!dateString) return '';
@@ -448,10 +456,9 @@
         }
 
         // ==========================================
-        // 1. MASTER APP DATA
+        // 2. MASTER APP DATA
         // ==========================================
         let appData = {
-            // Teks About Us Default (Dengan Format Center Tengah)
             aboutText: "<p class=\"ql-align-center\">Setiap anak berhak memupuk keyakinan untuk mendapatkan masa depan yang lebih baik. Found Us berusaha untuk menjaga itu, sebuah asa yang memancar dari binar mata anak-anak miskin kota. Meski mereka tumbuh di antara lorong-lorong muram Jakarta.</p><p class=\"ql-align-center\"><br></p><p class=\"ql-align-center\">Atas dasar itu, kami bertekad untuk menemui dan menemani mereka demi menjaga nyala harapannya melalui penyediaan ruang belajar dan wadah pengembangan potensi yang selama ini belum didapati secara maksimal.</p>",
             cta: {
                 partnerTitle: "Ready to make a difference?",
@@ -499,7 +506,7 @@
         let editingNewsIndex = -1;
 
         // ==========================================
-        // 2. KONEKSI DATABASE
+        // 3. KONEKSI DATABASE
         // ==========================================
         async function fetchMasterDataFromDB() {
             try {
@@ -522,14 +529,15 @@
                     }
                 }
             } catch (error) {
-                console.log("Database belum terhubung. Menggunakan data default.");
+                console.log("Database belum terhubung. Menggunakan data simulasi lokal.");
             }
             renderAllUI();
         }
 
         async function saveAllToDatabase(sectionName = 'Semua Data') {
-            // Ambil dari Text Editor About Us
-            appData.aboutText = quillAbout ? quillAbout.root.innerHTML : appData.aboutText;
+            if(quillAbout) {
+                appData.aboutText = quillAbout.root.innerHTML;
+            }
 
             appData.cta.partnerTitle = document.getElementById('adm-part-title').value;
             appData.cta.partnerDesc = document.getElementById('adm-part-desc').value;
@@ -555,7 +563,7 @@
                 if (result.success) {
                     alert(`✅ Perubahan pada [${sectionName}] berhasil disimpan permanen.`);
                 } else {
-                    alert(`⚠ Gagal simpan ke server. Namun [${sectionName}] sudah diperbarui di layar Anda.`);
+                    alert(`⚠ Gagal simpan ke server. Namun pratinjau sudah diperbarui.`);
                 }
             } catch (error) {
                 alert(`ℹ️ Mode Simulasi: Perubahan pada [${sectionName}] diterapkan di layar Anda.`);
@@ -563,7 +571,7 @@
         }
 
         // ==========================================
-        // 3. IMAGE COMPRESSOR & BACKGROUND LOGIC
+        // 4. IMAGE COMPRESSOR & BACKGROUND LOGIC
         // ==========================================
         function compressImage(file) {
             return new Promise((resolve, reject) => {
@@ -690,15 +698,13 @@
         }
 
         // ==========================================
-        // 4. RENDER UI FUNCTIONS (DENGAN SAFE FALLBACK & LOGIKA QR)
+        // 5. RENDER UI FUNCTIONS (DENGAN SAFE FALLBACK)
         // ==========================================
         function renderAllUI() {
             try {
-                // Menata About Us
                 if(quillAbout && appData?.aboutText) quillAbout.root.innerHTML = appData.aboutText;
                 document.getElementById('public-about-text').innerHTML = appData?.aboutText || "";
 
-                // Menata CTA
                 document.getElementById('adm-part-title').value = appData?.cta?.partnerTitle || "";
                 document.getElementById('adm-part-desc').value = appData?.cta?.partnerDesc || "";
                 document.getElementById('adm-part-link').value = appData?.cta?.partnerLink || "";
@@ -711,56 +717,49 @@
                 document.getElementById('pub-donate-title').innerText = appData?.cta?.donateTitle || "Support Us";
                 document.getElementById('pub-donate-desc').innerText = appData?.cta?.donateDesc || "";
 
-                // Logika Form Donate Admin
                 document.getElementById('adm-qris-url').value = appData?.donate?.qrisUrl || "";
                 document.getElementById('adm-qris-name').value = appData?.donate?.qrisName || "";
                 document.getElementById('adm-bank-name').value = appData?.donate?.bankName || "";
                 document.getElementById('adm-bank-acc').value = appData?.donate?.bankAccount || "";
                 document.getElementById('adm-bank-holder').value = appData?.donate?.bankHolder || "";
 
-                // Logika Modal Donate Publik
+                // --- LOGIKA TERINTEGRASI UNTUK DONASI ---
                 const hasQris = appData?.donate?.qrisUrl && appData.donate.qrisUrl.trim() !== "";
                 const hasBank = appData?.donate?.bankName && appData?.donate?.bankAccount;
                 
                 const qrisContainer = document.getElementById('pub-qris-container');
                 const bankContainer = document.getElementById('pub-bank-container');
-                const noDonateMsg = document.getElementById('pub-no-donate');
+                const btnDonate = document.getElementById('btn-donate-trigger');
+                const noDonateMsg = document.getElementById('pub-no-donate-btn-msg');
 
-                // Jika ada QRIS, tampilkan wadahnya. Jika kosong, sembunyikan.
                 if(hasQris) {
                     qrisContainer.classList.remove('hidden');
                     document.getElementById('pub-qris-img').src = appData.donate.qrisUrl;
                     document.getElementById('pub-qris-name').innerText = appData.donate.qrisName || "Yayasan Found Us";
-                } else {
-                    qrisContainer.classList.add('hidden');
-                }
+                } else { qrisContainer.classList.add('hidden'); }
 
                 if(hasBank) {
                     bankContainer.classList.remove('hidden');
                     document.getElementById('pub-bank-name').innerText = appData.donate.bankName;
                     document.getElementById('pub-bank-account').innerText = appData.donate.bankAccount;
                     document.getElementById('pub-bank-holder').innerText = appData.donate.bankHolder;
-                } else { 
-                    bankContainer.classList.add('hidden'); 
-                }
+                } else { bankContainer.classList.add('hidden'); }
 
-                // Jika admin menghapus semua metode pembayaran, tampilkan pesan peringatan
-                if(!hasQris && !hasBank && noDonateMsg) {
-                    noDonateMsg.classList.remove('hidden');
-                } else if(noDonateMsg) {
-                    noDonateMsg.classList.add('hidden');
+                if(!hasQris && !hasBank) {
+                    if(btnDonate) btnDonate.classList.add('hidden');
+                    if(noDonateMsg) noDonateMsg.classList.remove('hidden');
+                } else {
+                    if(btnDonate) btnDonate.classList.remove('hidden');
+                    if(noDonateMsg) noDonateMsg.classList.add('hidden');
                 }
 
                 renderContactsUI();
                 renderNewsUI();
                 renderAdminBackgrounds();
                 runSlideshows(); 
-            } catch (err) {
-                console.error("Gagal me-render UI:", err);
-            }
+            } catch (err) { console.error("Gagal me-render UI:", err); }
         }
 
-        // --- FITUR KONTAK ---
         function renderContactsUI() {
             const contacts = appData?.contacts || [];
             const adminCont = document.getElementById('admin-contact-list');
@@ -820,7 +819,6 @@
         }
         function removeContact(idx) { appData.contacts.splice(idx, 1); renderContactsUI(); }
 
-        // --- FITUR BERITA (NEWS) ---
         function renderNewsUI() {
             const newsList = appData?.news || [];
             const adminNews = document.getElementById('admin-news-list');
@@ -919,7 +917,7 @@
         function removeNews(idx) { appData.news.splice(idx, 1); renderNewsUI(); }
 
         // ==========================================
-        // 5. NAVIGASI, PASSWORD & MODAL LOGIC
+        // 6. NAVIGASI, PASSWORD & MODAL LOGIC
         // ==========================================
         async function changeAdminPassword() {
             const newPassword = document.getElementById('new-admin-password').value;
@@ -940,6 +938,7 @@
         async function showAdminAuth() {
             const btnText = document.getElementById('admin-login-text');
             btnText.innerText = "Checking...";
+            
             const password = prompt("Masukkan Password Admin:");
             if (!password) { btnText.innerText = "Admin Access"; return; }
 
@@ -957,9 +956,15 @@
 
         function goAdmin() {
             document.getElementById('public-view').classList.add('hidden');
-            document.getElementById('admin-view').classList.remove('hidden');
-            document.getElementById('admin-view').classList.add('flex');
+            const adminView = document.getElementById('admin-view');
+            adminView.classList.remove('hidden');
+            adminView.classList.add('flex');
             window.scrollTo(0,0);
+            
+            // Inisialisasi Editor setelah container benar-benar dirender untuk menghindari bug tampilan
+            setTimeout(() => {
+                initQuillEditors();
+            }, 50);
         }
 
         function showPublic() {
