@@ -8,8 +8,6 @@
     <link rel="icon" type="image/jpeg" href="logo.jpeg">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    
-    <!-- Quill.js Rich Text Editor CSS -->
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 
     <script>
@@ -28,7 +26,7 @@
         .ql-editor-public ol { list-style-type: decimal; padding-left: 1.5rem; margin-bottom: 0.5rem; }
         .bg-transition { transition: background-image 1.5s ease-in-out; }
         
-        /* Mendukung fitur Rata Kanan, Kiri, Tengah, Justify dari Quill */
+        /* Mendukung fitur Rata Kanan, Kiri, Tengah, Justify */
         .ql-align-center { text-align: center; }
         .ql-align-justify { text-align: justify; }
         .ql-align-right { text-align: right; }
@@ -203,6 +201,9 @@
                 <div class="bg-primary p-4 text-center sticky top-0"><h3 class="text-white font-bold text-lg">Support Found Us</h3></div>
                 
                 <div class="p-8 text-center">
+                    <!-- Kontainer Peringatan Kosong -->
+                    <p id="pub-no-donate" class="text-sm text-red-500 hidden py-4 font-semibold">Metode pembayaran donasi saat ini belum tersedia.</p>
+
                     <!-- Kontainer QRIS -->
                     <div id="pub-qris-container">
                         <p class="text-sm text-gray-600 mb-4">Silakan scan kode QRIS di bawah ini menggunakan aplikasi e-Wallet Anda.</p>
@@ -331,10 +332,19 @@
                         <h2 class="text-lg font-bold text-primary">Edit: Data Donasi (QRIS & Bank)</h2>
                         <button onclick="saveAllToDatabase('Data Donasi')" class="text-xs bg-green-100 text-green-700 px-3 py-1.5 rounded font-semibold hover:bg-green-200 transition"><i class="fas fa-save mr-1"></i> Save</button>
                     </div>
-                    <p class="text-xs text-gray-500 mb-4">Jika Anda mengosongkan URL QRIS dan Rekening Bank di bawah, fitur donasi akan hilang dari publik.</p>
+                    <p class="text-xs text-gray-500 mb-4">Jika Anda menghapus QRIS dan mengosongkan Rekening Bank di bawah, fitur donasi akan hilang dari publik.</p>
                     
                     <h3 class="text-sm font-bold text-gray-700 mb-2">QRIS Information</h3>
-                    <input type="text" id="adm-qris-url" placeholder="URL Gambar QRIS (Kosongkan jika tidak ada)" class="w-full border-gray-300 rounded p-2 text-sm mb-2">
+                    <div class="flex gap-2 mb-2 items-center">
+                        <input type="file" id="adm-qris-file" accept="image/*" class="border border-gray-300 rounded p-1.5 text-sm bg-white flex-1">
+                        <button type="button" onclick="uploadQrisUI()" class="bg-blue-600 text-white px-4 py-2 rounded text-sm hover:bg-blue-700 font-medium whitespace-nowrap">Upload QRIS</button>
+                    </div>
+                    <p id="qris-upload-status" class="text-xs text-blue-600 mb-4"></p>
+                    
+                    <div id="admin-qris-preview" class="mb-4">
+                        <!-- Thumbnail QRIS akan muncul di sini -->
+                    </div>
+
                     <input type="text" id="adm-qris-name" placeholder="Atas Nama (QRIS)" class="w-full border-gray-300 rounded p-2 text-sm mb-6">
                     
                     <h3 class="text-sm font-bold text-gray-700 mb-2">Bank Transfer</h3>
@@ -545,7 +555,6 @@
             appData.cta.donateTitle = document.getElementById('adm-don-title').value;
             appData.cta.donateDesc = document.getElementById('adm-don-desc').value;
 
-            appData.donate.qrisUrl = document.getElementById('adm-qris-url').value;
             appData.donate.qrisName = document.getElementById('adm-qris-name').value;
             appData.donate.bankName = document.getElementById('adm-bank-name').value;
             appData.donate.bankAccount = document.getElementById('adm-bank-acc').value;
@@ -611,6 +620,35 @@
                 });
             }
         });
+
+        // ==========================================
+        // 5. QRIS UPLOAD LOGIC
+        // ==========================================
+        async function uploadQrisUI() {
+            const fileInput = document.getElementById('adm-qris-file');
+            const file = fileInput.files[0];
+            const statusText = document.getElementById('qris-upload-status');
+
+            if(!file) return alert("Pilih file gambar QRIS terlebih dahulu!");
+            
+            statusText.innerText = "Mengompres dan mengunggah QRIS...";
+            try {
+                const compressedImg = await compressImage(file);
+                if (!appData.donate) appData.donate = {};
+                appData.donate.qrisUrl = compressedImg;
+                fileInput.value = '';
+                statusText.innerText = "Berhasil! Jangan lupa klik Save.";
+                setTimeout(()=> statusText.innerText='', 3000);
+                renderAllUI(); 
+            } catch(err) { 
+                statusText.innerText = "Gagal memproses gambar."; 
+            }
+        }
+
+        function removeQris() {
+            if(appData.donate) appData.donate.qrisUrl = "";
+            renderAllUI();
+        }
 
         async function uploadBackgroundUI() {
             const section = document.getElementById('bg-section-select').value;
@@ -717,7 +755,6 @@
                 document.getElementById('pub-donate-title').innerText = appData?.cta?.donateTitle || "Support Us";
                 document.getElementById('pub-donate-desc').innerText = appData?.cta?.donateDesc || "";
 
-                document.getElementById('adm-qris-url').value = appData?.donate?.qrisUrl || "";
                 document.getElementById('adm-qris-name').value = appData?.donate?.qrisName || "";
                 document.getElementById('adm-bank-name').value = appData?.donate?.bankName || "";
                 document.getElementById('adm-bank-acc').value = appData?.donate?.bankAccount || "";
@@ -727,23 +764,38 @@
                 const hasQris = appData?.donate?.qrisUrl && appData.donate.qrisUrl.trim() !== "";
                 const hasBank = appData?.donate?.bankName && appData?.donate?.bankAccount;
                 
+                const qrisPreview = document.getElementById('admin-qris-preview');
                 const qrisContainer = document.getElementById('pub-qris-container');
                 const bankContainer = document.getElementById('pub-bank-container');
                 const btnDonate = document.getElementById('btn-donate-trigger');
                 const noDonateMsg = document.getElementById('pub-no-donate-btn-msg');
 
                 if(hasQris) {
-                    qrisContainer.classList.remove('hidden');
-                    document.getElementById('pub-qris-img').src = appData.donate.qrisUrl;
-                    document.getElementById('pub-qris-name').innerText = appData.donate.qrisName || "Yayasan Found Us";
-                } else { qrisContainer.classList.add('hidden'); }
+                    if(qrisPreview) {
+                        qrisPreview.innerHTML = `
+                            <p class="text-xs text-gray-500 mb-1">QRIS Saat Ini:</p>
+                            <img src="${appData.donate.qrisUrl}" class="h-32 object-contain border border-gray-200 rounded p-1 bg-white mb-1">
+                            <button onclick="removeQris()" class="text-xs text-red-500 hover:text-red-700 block"><i class="fas fa-trash"></i> Hapus QRIS</button>
+                        `;
+                    }
+                    if(qrisContainer) {
+                        qrisContainer.classList.remove('hidden');
+                        document.getElementById('pub-qris-img').src = appData.donate.qrisUrl;
+                        document.getElementById('pub-qris-name').innerText = appData.donate.qrisName || "Yayasan Found Us";
+                    }
+                } else {
+                    if(qrisPreview) qrisPreview.innerHTML = `<p class="text-xs text-gray-400">Belum ada gambar QRIS yang diupload.</p>`;
+                    if(qrisContainer) qrisContainer.classList.add('hidden');
+                }
 
                 if(hasBank) {
-                    bankContainer.classList.remove('hidden');
-                    document.getElementById('pub-bank-name').innerText = appData.donate.bankName;
-                    document.getElementById('pub-bank-account').innerText = appData.donate.bankAccount;
-                    document.getElementById('pub-bank-holder').innerText = appData.donate.bankHolder;
-                } else { bankContainer.classList.add('hidden'); }
+                    if(bankContainer) bankContainer.classList.remove('hidden');
+                    if(document.getElementById('pub-bank-name')) document.getElementById('pub-bank-name').innerText = appData.donate.bankName;
+                    if(document.getElementById('pub-bank-account')) document.getElementById('pub-bank-account').innerText = appData.donate.bankAccount;
+                    if(document.getElementById('pub-bank-holder')) document.getElementById('pub-bank-holder').innerText = appData.donate.bankHolder;
+                } else { 
+                    if(bankContainer) bankContainer.classList.add('hidden'); 
+                }
 
                 if(!hasQris && !hasBank) {
                     if(btnDonate) btnDonate.classList.add('hidden');
@@ -961,7 +1013,7 @@
             adminView.classList.add('flex');
             window.scrollTo(0,0);
             
-            // Inisialisasi Editor setelah container benar-benar dirender untuk menghindari bug tampilan
+            // Inisialisasi Editor setelah container benar-benar dirender agar dimensi bisa dibaca Quill
             setTimeout(() => {
                 initQuillEditors();
             }, 50);
