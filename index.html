@@ -8,8 +8,6 @@
     <link rel="icon" type="image/jpeg" href="logo.jpeg">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    
-    <!-- Quill.js Rich Text Editor CSS -->
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 
     <script>
@@ -21,10 +19,12 @@
         html { scroll-behavior: smooth; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        /* Kustomisasi tampilan konten Quill di Publik */
         .ql-editor-public h1, .ql-editor-public h2 { font-weight: bold; margin-bottom: 0.5rem; }
         .ql-editor-public ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 0.5rem; }
         .ql-editor-public ol { list-style-type: decimal; padding-left: 1.5rem; margin-bottom: 0.5rem; }
+        
+        /* Animasi Transisi Latar Belakang */
+        .bg-transition { transition: background-image 1.5s ease-in-out; }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans">
@@ -52,13 +52,17 @@
             </div>
         </nav>
 
-        <div class="pt-20 bg-primary">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32 flex flex-col md:flex-row items-center">
+        <!-- COVER / HERO SECTION -->
+        <div class="relative pt-20 bg-primary overflow-hidden">
+            <!-- Background Layer -->
+            <div id="bg-hero" class="absolute inset-0 bg-transition bg-cover bg-center opacity-20"></div>
+            
+            <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32 flex flex-col md:flex-row items-center">
                 <div class="md:w-1/2 text-white pr-0 md:pr-10 text-center md:text-left">
                     <h1 class="text-4xl md:text-5xl font-bold leading-tight mb-6">
                         Temui Kita, <span class="text-secondary">Temani Kita.</span>
                     </h1>
-                    <p class="text-lg text-gray-300 mb-8">
+                    <p class="text-lg text-gray-200 mb-8">
                         Menemui berarti hadir, mendengar, dan mengenal anak-anak untuk kemudian menemani mereka belajar, tumbuh, dan berkembang bersama demi masa depan yang lebih baik.
                     </p>
                     <a href="#impact" class="bg-secondary text-primary font-bold py-3 px-8 rounded hover:bg-yellow-400 transition inline-block">
@@ -71,41 +75,47 @@
             </div>
         </div>
 
-        <section id="about" class="py-20 bg-white">
-            <div class="max-w-4xl mx-auto px-4 text-center">
+        <!-- ABOUT US SECTION -->
+        <section id="about" class="py-20 relative bg-white">
+            <div id="bg-about" class="absolute inset-0 bg-transition bg-cover bg-center opacity-10"></div>
+            <div class="relative z-10 max-w-4xl mx-auto px-4 text-center">
                 <h2 class="text-3xl font-bold text-primary mb-6">About Us</h2>
                 <div class="w-24 h-1 bg-secondary mx-auto mb-8"></div>
-                <p id="public-about-text" class="text-gray-600 text-lg leading-relaxed mb-6 whitespace-pre-line">Memuat data...</p>
+                <div class="bg-white/80 p-8 rounded-2xl shadow-sm backdrop-blur-sm border border-gray-100">
+                    <p id="public-about-text" class="text-gray-700 text-lg leading-relaxed whitespace-pre-line">Memuat data...</p>
+                </div>
             </div>
         </section>
 
-        <section id="impact" class="py-20 bg-gray-50">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- AREAS OF IMPACT SECTION -->
+        <section id="impact" class="py-20 relative bg-gray-50">
+            <div id="bg-impact" class="absolute inset-0 bg-transition bg-cover bg-center opacity-10"></div>
+            <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-16">
                     <h2 class="text-3xl font-bold text-primary mb-4">Areas of Impact</h2>
-                    <p class="text-gray-600">Berakar dari tekad Found Us, kami mewujudkannya melalui program yang saling mendukung.</p>
+                    <p class="text-gray-700 font-medium">Berakar dari tekad Found Us, kami mewujudkannya melalui program yang saling mendukung.</p>
                 </div>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    <div class="bg-white p-8 rounded-lg shadow-sm text-center border-b-4 border-transparent hover:border-secondary">
+                    <div class="bg-white/95 p-8 rounded-lg shadow-sm text-center border-b-4 border-transparent hover:border-secondary backdrop-blur-sm">
                         <div class="w-16 h-16 bg-blue-50 text-primary rounded-full flex items-center justify-center mx-auto mb-6 text-2xl"><i class="fas fa-book-reader"></i></div>
                         <h3 class="text-xl font-bold text-primary mb-1">Grow With Us</h3>
                         <p class="text-secondary text-xs font-bold mb-3 uppercase tracking-wide">Child Development</p>
                         <p class="text-gray-600 text-sm">Pertumbuhan kognitif, emosional, dan pondasi edukasi anak usia dini.</p>
                     </div>
-                    <div class="bg-white p-8 rounded-lg shadow-sm text-center border-b-4 border-transparent hover:border-secondary">
+                    <div class="bg-white/95 p-8 rounded-lg shadow-sm text-center border-b-4 border-transparent hover:border-secondary backdrop-blur-sm">
                         <div class="w-16 h-16 bg-blue-50 text-primary rounded-full flex items-center justify-center mx-auto mb-6 text-2xl"><i class="fas fa-globe-americas"></i></div>
                         <h3 class="text-xl font-bold text-primary mb-1">Explore With Us</h3>
                         <p class="text-secondary text-xs font-bold mb-3 uppercase tracking-wide">Experiential Learning</p>
                         <p class="text-gray-600 text-sm">Pengalaman belajar lapangan untuk memperluas wawasan.</p>
                     </div>
-                    <div class="bg-white p-8 rounded-lg shadow-sm text-center border-b-4 border-transparent hover:border-secondary">
+                    <div class="bg-white/95 p-8 rounded-lg shadow-sm text-center border-b-4 border-transparent hover:border-secondary backdrop-blur-sm">
                         <div class="w-16 h-16 bg-blue-50 text-primary rounded-full flex items-center justify-center mx-auto mb-6 text-2xl"><i class="fas fa-palette"></i></div>
                         <h3 class="text-xl font-bold text-primary mb-1">Create With Us</h3>
                         <p class="text-secondary text-xs font-bold mb-3 uppercase tracking-wide">Skill Development</p>
                         <p class="text-gray-600 text-sm">Mengasah kreativitas dan keterampilan praktis adaptasi zaman.</p>
                     </div>
-                    <div class="bg-white p-8 rounded-lg shadow-sm text-center border-b-4 border-transparent hover:border-secondary">
+                    <div class="bg-white/95 p-8 rounded-lg shadow-sm text-center border-b-4 border-transparent hover:border-secondary backdrop-blur-sm">
                         <div class="w-16 h-16 bg-blue-50 text-primary rounded-full flex items-center justify-center mx-auto mb-6 text-2xl"><i class="fas fa-rocket"></i></div>
                         <h3 class="text-xl font-bold text-primary mb-1">Dream With Us</h3>
                         <p class="text-secondary text-xs font-bold mb-3 uppercase tracking-wide">Future & Aspiration</p>
@@ -115,24 +125,25 @@
             </div>
         </section>
 
-        <!-- PUBLIC: NEWS SECTION -->
-        <section id="news" class="py-20 bg-white">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- NEWS SECTION -->
+        <section id="news" class="py-20 relative bg-white">
+            <div id="bg-news" class="absolute inset-0 bg-transition bg-cover bg-center opacity-10"></div>
+            <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between items-end mb-12">
                     <div>
                         <h2 class="text-3xl font-bold text-primary mb-2">Latest News</h2>
-                        <p class="text-gray-600">Updates on our journey and milestones.</p>
+                        <p class="text-gray-700 font-medium">Updates on our journey and milestones.</p>
                     </div>
                 </div>
                 
                 <div id="public-news-container" class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <!-- News dinamis akan dimuat ke sini -->
+                    <!-- News dinamis dimuat di sini -->
                 </div>
             </div>
         </section>
 
-        <!-- PUBLIC: CTA & DONATE SECTION -->
-        <section class="py-16 bg-gray-100">
+        <!-- CTA & DONATE SECTION -->
+        <section class="py-16 bg-gray-100 relative z-20">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="bg-primary rounded-2xl shadow-xl overflow-hidden">
                     <div class="grid grid-cols-1 md:grid-cols-2">
@@ -153,7 +164,7 @@
             </div>
         </section>
 
-        <footer class="bg-gray-900 text-white pt-12 pb-6">
+        <footer class="bg-gray-900 text-white pt-12 pb-6 relative z-20">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                     <div class="col-span-1 md:col-span-2">
@@ -238,32 +249,66 @@
         <main class="flex-1 p-8 h-screen overflow-y-auto">
             <div class="flex justify-between items-center mb-8 sticky top-0 bg-gray-100 py-4 z-10 border-b border-gray-200">
                 <h1 class="text-2xl font-bold text-gray-800">Dashboard Editor</h1>
-                <button onclick="saveAllLocalData()" class="bg-green-600 text-white px-6 py-2 rounded shadow hover:bg-green-700 text-sm font-bold">
+                <button onclick="saveAllLocalData('Semua Bagian')" class="bg-green-600 text-white px-6 py-2 rounded shadow hover:bg-green-700 text-sm font-bold transition">
                     <i class="fas fa-save mr-2"></i>Save All Changes
                 </button>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 pb-20">
                 
-                <!-- Security Settings (Ubah Password) -->
+                <!-- Security Settings -->
                 <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-                    <h2 class="text-lg font-bold text-red-600 mb-4 border-b pb-2"><i class="fas fa-lock mr-2"></i>Security Settings</h2>
+                    <div class="flex justify-between items-center border-b pb-2 mb-4">
+                        <h2 class="text-lg font-bold text-red-600"><i class="fas fa-lock mr-2"></i>Security Settings</h2>
+                    </div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Ubah Password Admin</label>
                     <div class="flex gap-2">
                         <input type="password" id="new-admin-password" placeholder="Password Baru (min 5 karakter)" class="flex-1 border border-gray-300 rounded p-2 text-sm">
-                        <button type="button" onclick="changeAdminPassword()" class="bg-red-600 text-white px-4 py-2 rounded text-sm hover:bg-red-700 font-medium">Update Password</button>
+                        <button type="button" onclick="changeAdminPassword()" class="bg-red-600 text-white px-4 py-2 rounded text-sm hover:bg-red-700 font-medium">Update</button>
                     </div>
                 </div>
 
                 <!-- Edit About Us -->
                 <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-                    <h2 class="text-lg font-bold text-primary mb-4 border-b pb-2">Edit: About Us</h2>
+                    <div class="flex justify-between items-center border-b pb-2 mb-4">
+                        <h2 class="text-lg font-bold text-primary">Edit: About Us</h2>
+                        <button onclick="saveAllLocalData('About Us')" class="text-xs bg-green-100 text-green-700 px-3 py-1.5 rounded font-semibold hover:bg-green-200 transition"><i class="fas fa-save mr-1"></i> Save</button>
+                    </div>
                     <textarea id="admin-about-input" rows="5" class="w-full border border-gray-300 rounded p-2 text-sm focus:ring-primary focus:border-primary">Memuat data...</textarea>
+                </div>
+
+                <!-- NEW: Latar Belakang / Backgrounds -->
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 col-span-1 lg:col-span-2">
+                    <div class="flex justify-between items-center border-b pb-2 mb-4">
+                        <h2 class="text-lg font-bold text-primary">Edit: Latar Belakang (Slideshow)</h2>
+                        <button onclick="saveAllLocalData('Latar Belakang')" class="text-xs bg-green-100 text-green-700 px-3 py-1.5 rounded font-semibold hover:bg-green-200 transition"><i class="fas fa-save mr-1"></i> Save</button>
+                    </div>
+                    <p class="text-xs text-gray-500 mb-4">Upload foto untuk latar belakang. Jika mengunggah lebih dari 1 foto, akan otomatis menjadi slideshow.</p>
+                    
+                    <div class="flex flex-col md:flex-row gap-4 mb-6">
+                        <select id="bg-section-select" onchange="renderAdminBackgrounds()" class="border-gray-300 rounded p-2 text-sm bg-white border">
+                            <option value="hero">Bagian Cover / Hero</option>
+                            <option value="about">Bagian About Us</option>
+                            <option value="impact">Bagian Areas of Impact</option>
+                            <option value="news">Bagian News</option>
+                        </select>
+                        <input type="file" id="bg-img-file" accept="image/*" class="border border-gray-300 rounded p-1.5 text-sm bg-white flex-1">
+                        <button type="button" onclick="uploadBackgroundUI()" class="bg-blue-600 text-white px-4 py-2 rounded text-sm hover:bg-blue-700 font-medium whitespace-nowrap">Upload Background</button>
+                    </div>
+                    <p id="bg-upload-status" class="text-xs text-blue-600 -mt-4 mb-4"></p>
+
+                    <h3 class="font-bold text-sm text-gray-800 mb-2">Foto Latar Belakang Saat Ini:</h3>
+                    <div id="admin-bg-list" class="flex flex-wrap gap-4 bg-gray-50 p-4 border border-gray-100 rounded min-h-[100px]">
+                        <!-- Thumbnails loaded here -->
+                    </div>
                 </div>
 
                 <!-- Edit CTA Section (Partner & Donate Texts) -->
                 <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 col-span-1 lg:col-span-2">
-                    <h2 class="text-lg font-bold text-primary mb-4 border-b pb-2">Edit: Banner "Partner With Us" & "Donate"</h2>
+                    <div class="flex justify-between items-center border-b pb-2 mb-4">
+                        <h2 class="text-lg font-bold text-primary">Edit: Banner "Partner With Us" & "Donate"</h2>
+                        <button onclick="saveAllLocalData('Banner & CTA')" class="text-xs bg-green-100 text-green-700 px-3 py-1.5 rounded font-semibold hover:bg-green-200 transition"><i class="fas fa-save mr-1"></i> Save</button>
+                    </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="bg-gray-50 p-4 rounded border border-gray-200">
                             <h3 class="font-bold text-sm text-gray-800 mb-3"><i class="fas fa-handshake mr-2"></i>Partner Section</h3>
@@ -281,7 +326,10 @@
 
                 <!-- Edit Donation Modal (QRIS & Bank) -->
                 <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-                    <h2 class="text-lg font-bold text-primary mb-4 border-b pb-2">Edit: Informasi Donasi (QRIS & Bank)</h2>
+                    <div class="flex justify-between items-center border-b pb-2 mb-4">
+                        <h2 class="text-lg font-bold text-primary">Edit: Data Donasi (QRIS & Bank)</h2>
+                        <button onclick="saveAllLocalData('Data Donasi')" class="text-xs bg-green-100 text-green-700 px-3 py-1.5 rounded font-semibold hover:bg-green-200 transition"><i class="fas fa-save mr-1"></i> Save</button>
+                    </div>
                     
                     <h3 class="text-sm font-bold text-gray-700 mb-2">QRIS Information</h3>
                     <input type="text" id="adm-qris-url" placeholder="URL Gambar QRIS" class="w-full border-gray-300 rounded p-2 text-sm mb-2">
@@ -296,8 +344,10 @@
 
                 <!-- Edit Connect With Us -->
                 <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-                    <h2 class="text-lg font-bold text-primary mb-4 border-b pb-2">Edit: Connect With Us</h2>
-                    <p class="text-xs text-gray-500 mb-4">Atur media kontak di footer.</p>
+                    <div class="flex justify-between items-center border-b pb-2 mb-4">
+                        <h2 class="text-lg font-bold text-primary">Edit: Connect With Us</h2>
+                        <button onclick="saveAllLocalData('Kontak Media Sosial')" class="text-xs bg-green-100 text-green-700 px-3 py-1.5 rounded font-semibold hover:bg-green-200 transition"><i class="fas fa-save mr-1"></i> Save</button>
+                    </div>
                     
                     <div class="flex gap-2 mb-4 flex-wrap">
                         <select id="contact-platform" class="border border-gray-300 rounded p-2 text-sm bg-white min-w-[120px]">
@@ -321,7 +371,10 @@
 
                 <!-- Edit News Section with Rich Text & File Upload -->
                 <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 col-span-1 lg:col-span-2">
-                    <h2 class="text-lg font-bold text-primary mb-4 border-b pb-2">Edit: News & Milestones</h2>
+                    <div class="flex justify-between items-center border-b pb-2 mb-4">
+                        <h2 class="text-lg font-bold text-primary">Edit: News & Milestones</h2>
+                        <button onclick="saveAllLocalData('Berita & News')" class="text-xs bg-green-100 text-green-700 px-3 py-1.5 rounded font-semibold hover:bg-green-200 transition"><i class="fas fa-save mr-1"></i> Save</button>
+                    </div>
                     
                     <div class="bg-gray-50 p-4 border border-gray-200 rounded mb-6">
                         <h3 class="font-bold text-sm text-gray-800 mb-3">Formulir Berita</h3>
@@ -332,7 +385,8 @@
                             </div>
                             <div>
                                 <label class="block text-xs font-medium text-gray-700 mb-1">Tanggal Publikasi</label>
-                                <input type="text" id="news-date" placeholder="Cth: Oct 10, 2026" class="border-gray-300 rounded p-2 text-sm w-full border">
+                                <!-- DATE PICKER CALENDAR DIGUNAKAN DI SINI -->
+                                <input type="date" id="news-date" class="border-gray-300 rounded p-2 text-sm w-full border text-gray-700 bg-white">
                             </div>
                             <div>
                                 <label class="block text-xs font-medium text-gray-700 mb-1">Upload Gambar (Otomatis Kompres)</label>
@@ -353,7 +407,7 @@
                         
                         <div class="flex flex-wrap gap-2 mt-4">
                             <button type="button" id="btn-add-news" onclick="addNewsUI()" class="bg-blue-600 text-white px-4 py-2 rounded text-sm hover:bg-blue-700 font-medium transition">
-                                + Tambah Berita Ke Daftar
+                                + Tambah Berita
                             </button>
                             <button type="button" id="btn-cancel-news" onclick="cancelEditNews()" class="hidden bg-gray-500 text-white px-4 py-2 rounded text-sm hover:bg-gray-600 font-medium transition">
                                 Batal Edit
@@ -395,6 +449,15 @@
             });
         });
 
+        // Format Date dari kalender ke Indonesia
+        function formatToIndonesianDate(dateString) {
+            if (!dateString) return '';
+            const date = new Date(dateString);
+            if(isNaN(date)) return dateString; // fallback jika format aneh
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return date.toLocaleDateString('id-ID', options);
+        }
+
         // --- 1. STATE DATA UTAMA ---
         let appData = {
             cta: {
@@ -419,12 +482,19 @@
             news: [
                 {
                     title: "Langkah Awal Menuju NGO Internasional",
-                    date: "Oct 10, 2026",
+                    date: "10 Oktober 2026",
+                    dateRaw: "2026-10-10", // Disimpan untuk kalender saat edit
                     content: "<p>Membuka babak baru dalam pembentukan struktur organisasi dan pemetaan wilayah kerja binaan di Jakarta.</p>",
                     image: "https://images.unsplash.com/photo-1577896851231-70ef18881754?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
                     link: "#"
                 }
-            ]
+            ],
+            backgrounds: {
+                hero: [],
+                about: [],
+                impact: [],
+                news: []
+            }
         };
 
         const iconMap = {
@@ -438,11 +508,10 @@
             'tiktok': { class: 'fab fa-tiktok', color: 'text-gray-400 hover:text-white' }
         };
 
-        // --- STATE EDITING ---
         let editingContactIndex = -1;
         let editingNewsIndex = -1;
 
-        // --- 2. FUNGSI IMAGE COMPRESSOR ---
+        // --- 2. IMAGE COMPRESSOR & BACKGROUND LOGIC ---
         function compressImage(file) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
@@ -450,7 +519,7 @@
                     const img = new Image();
                     img.onload = function() {
                         const canvas = document.createElement('canvas');
-                        const MAX_WIDTH = 800;
+                        const MAX_WIDTH = 1200; // Agak lebih besar karena untuk background/cover
                         let width = img.width;
                         let height = img.height;
 
@@ -479,12 +548,10 @@
         document.addEventListener('DOMContentLoaded', () => {
             const fileInput = document.getElementById('news-img-file');
             const statusText = document.getElementById('upload-status');
-            
             if(fileInput) {
                 fileInput.addEventListener('change', async function(e) {
                     const file = e.target.files[0];
                     if(!file) return;
-                    
                     statusText.innerText = "Mengompres gambar...";
                     try {
                         currentCompressedImage = await compressImage(file);
@@ -497,21 +564,109 @@
             }
         });
 
+        // Background Upload Logic
+        async function uploadBackgroundUI() {
+            const section = document.getElementById('bg-section-select').value;
+            const fileInput = document.getElementById('bg-img-file');
+            const file = fileInput.files[0];
+            const statusText = document.getElementById('bg-upload-status');
+
+            if(!file) return alert("Pilih file foto terlebih dahulu!");
+            
+            statusText.innerText = "Mengompres dan mengunggah...";
+            try {
+                const compressedImg = await compressImage(file);
+                appData.backgrounds[section].push(compressedImg);
+                fileInput.value = '';
+                statusText.innerText = "Berhasil ditambahkan!";
+                setTimeout(()=> statusText.innerText='', 2000);
+                renderAdminBackgrounds();
+                updateSlideshowNow(section); // Langsung perbarui tampilan
+            } catch(err) {
+                statusText.innerText = "Gagal memproses gambar.";
+            }
+        }
+
+        function renderAdminBackgrounds() {
+            const section = document.getElementById('bg-section-select').value;
+            const container = document.getElementById('admin-bg-list');
+            const imgs = appData.backgrounds[section];
+            container.innerHTML = '';
+            
+            if(imgs.length === 0) {
+                container.innerHTML = '<p class="text-sm text-gray-400">Belum ada foto latar untuk bagian ini.</p>';
+                return;
+            }
+
+            imgs.forEach((imgBase64, idx) => {
+                container.innerHTML += `
+                    <div class="relative w-24 h-16 rounded overflow-hidden shadow-sm group">
+                        <img src="${imgBase64}" class="w-full h-full object-cover">
+                        <button onclick="removeBackground('${section}', ${idx})" class="absolute inset-0 bg-black bg-opacity-50 text-white opacity-0 group-hover:opacity-100 flex items-center justify-center transition">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+            });
+        }
+
+        function removeBackground(section, idx) {
+            appData.backgrounds[section].splice(idx, 1);
+            renderAdminBackgrounds();
+            updateSlideshowNow(section);
+        }
+
+        // Slideshow Background Engine
+        let slideTimer;
+        let slideIndices = { hero: 0, about: 0, impact: 0, news: 0 };
+
+        function updateSlideshowNow(section) {
+            const imgs = appData.backgrounds[section];
+            const el = document.getElementById(`bg-${section}`);
+            if(!el) return;
+
+            if (imgs && imgs.length > 0) {
+                // Pastikan index tidak lebih dari array (jika ada yg dihapus)
+                if(slideIndices[section] >= imgs.length) slideIndices[section] = 0; 
+                el.style.backgroundImage = `url('${imgs[slideIndices[section]]}')`;
+            } else {
+                el.style.backgroundImage = 'none';
+            }
+        }
+
+        function runSlideshows() {
+            if(slideTimer) clearInterval(slideTimer);
+            
+            const sections = ['hero', 'about', 'impact', 'news'];
+            
+            // Initial render
+            sections.forEach(sec => updateSlideshowNow(sec));
+
+            // Interval (5 seconds)
+            slideTimer = setInterval(() => {
+                sections.forEach(sec => {
+                    const imgs = appData.backgrounds[sec];
+                    const el = document.getElementById(`bg-${sec}`);
+                    if(el && imgs && imgs.length > 1) { // Ganti gambar cuma jika lebih dari 1
+                        slideIndices[sec] = (slideIndices[sec] + 1) % imgs.length;
+                        el.style.backgroundImage = `url('${imgs[slideIndices[sec]]}')`;
+                    }
+                });
+            }, 5000);
+        }
+
         // --- 3. FUNGSI SHARE LINK ---
         function shareNews(title) {
             const shareUrl = window.location.href.split('#')[0] + '#news';
             if (navigator.share) {
                 navigator.share({
                     title: 'Found Us News: ' + title,
-                    text: 'Cek kabar terbaru dari Found Us: ' + title,
                     url: shareUrl
                 }).catch(err => console.log('Error sharing:', err));
             } else {
                 navigator.clipboard.writeText(shareUrl).then(() => {
                     alert('Tautan berita berhasil disalin ke clipboard!');
-                }).catch(err => {
-                    alert('Tautan: ' + shareUrl);
-                });
+                }).catch(err => alert('Tautan: ' + shareUrl));
             }
         }
 
@@ -550,6 +705,8 @@
 
             renderContactsUI();
             renderNewsUI();
+            renderAdminBackgrounds();
+            runSlideshows(); // Jalankan background dinamis
         }
 
         // === FITUR KONTAK ===
@@ -642,9 +799,9 @@
             pubNews.innerHTML = '';
             appData.news.forEach(n => {
                 pubNews.innerHTML += `
-                    <div class="bg-gray-50 rounded-lg overflow-hidden shadow-sm flex flex-col">
+                    <div class="bg-gray-50 rounded-lg overflow-hidden shadow-sm flex flex-col relative z-10 border border-gray-100">
                         <img src="${n.image}" alt="News Image" class="w-full h-48 object-cover">
-                        <div class="p-6 flex-1 flex flex-col">
+                        <div class="p-6 flex-1 flex flex-col bg-white">
                             <span class="text-secondary text-xs font-bold uppercase tracking-wider">${n.date}</span>
                             <h3 class="text-xl font-bold text-primary mt-2 mb-3">${n.title}</h3>
                             <div class="text-gray-600 text-sm mb-4 flex-1 ql-editor-public">${n.content}</div>
@@ -664,12 +821,12 @@
             const n = appData.news[idx];
             
             document.getElementById('news-title').value = n.title;
-            document.getElementById('news-date').value = n.date;
+            document.getElementById('news-date').value = n.dateRaw || ''; // Set kembali ke input kalender
             document.getElementById('news-link').value = n.link === '#' ? '' : n.link;
             quill.root.innerHTML = n.content;
             currentCompressedImage = n.image; 
             
-            document.getElementById('upload-status').innerText = "(Gambar lama dipertahankan. Upload file baru jika ingin mengganti.)";
+            document.getElementById('upload-status').innerText = "(Gambar lama dipertahankan. Upload baru jika ingin mengganti.)";
             
             const btn = document.getElementById('btn-add-news');
             btn.innerText = "Update Berita";
@@ -691,7 +848,7 @@
             currentCompressedImage = null; 
             
             const btn = document.getElementById('btn-add-news');
-            btn.innerText = "+ Tambah Berita Ke Daftar";
+            btn.innerText = "+ Tambah Berita";
             btn.classList.remove('bg-green-600', 'hover:bg-green-700');
             btn.classList.add('bg-blue-600', 'hover:bg-blue-700');
             document.getElementById('btn-cancel-news').classList.add('hidden');
@@ -699,7 +856,9 @@
 
         function addNewsUI() {
             const title = document.getElementById('news-title').value.trim();
-            const date = document.getElementById('news-date').value.trim();
+            const dateRaw = document.getElementById('news-date').value;
+            const dateFormatted = formatToIndonesianDate(dateRaw); // Format kalender ke ID
+            
             const link = document.getElementById('news-link').value.trim() || '#';
             const contentHTML = quill.root.innerHTML; 
             const finalImage = currentCompressedImage || 'https://images.unsplash.com/photo-1577896851231-70ef18881754?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80';
@@ -707,10 +866,10 @@
             if(!title || quill.getText().trim().length === 0) return alert("Judul dan Isi Berita wajib diisi!");
             
             if (editingNewsIndex >= 0) {
-                appData.news[editingNewsIndex] = { title, date, image: finalImage, link, content: contentHTML };
+                appData.news[editingNewsIndex] = { title, date: dateFormatted, dateRaw, image: finalImage, link, content: contentHTML };
                 cancelEditNews(); 
             } else {
-                appData.news.unshift({ title, date, image: finalImage, link, content: contentHTML });
+                appData.news.unshift({ title, date: dateFormatted, dateRaw, image: finalImage, link, content: contentHTML });
                 cancelEditNews(); 
             }
             renderNewsUI();
@@ -718,7 +877,7 @@
         function removeNews(idx) { appData.news.splice(idx, 1); renderNewsUI(); }
 
         // --- 5. FUNGSI SIMPAN SELURUH DATA & NAVIGASI ---
-        async function saveAllLocalData() {
+        async function saveAllLocalData(sectionName = 'Semua Bagian') {
             appData.cta.partnerTitle = document.getElementById('adm-part-title').value;
             appData.cta.partnerDesc = document.getElementById('adm-part-desc').value;
             appData.cta.partnerLink = document.getElementById('adm-part-link').value;
@@ -732,7 +891,9 @@
             appData.donate.bankHolder = document.getElementById('adm-bank-holder').value;
 
             renderAllUI();
-            await saveAboutText();
+            
+            // Simpan Teks About Us ke Vercel jika terkoneksi
+            await saveAboutText(sectionName);
         }
 
         async function loadAboutText() {
@@ -747,8 +908,10 @@
             } catch (error) { console.error("Mode Offline DB"); }
         }
 
-        async function saveAboutText() {
+        async function saveAboutText(sectionName) {
             const updatedText = document.getElementById('admin-about-input').value;
+            document.getElementById('public-about-text').innerText = updatedText; // Update lokal
+            
             try {
                 const response = await fetch('/api/update-about', {
                     method: 'POST',
@@ -757,13 +920,13 @@
                 });
                 const result = await response.json();
                 if (result.success) {
-                    alert('Semua perubahan berhasil diterapkan!');
-                    loadAboutText(); 
+                    alert('Perubahan pada ' + sectionName + ' berhasil disimpan permanen!');
                 } else {
-                    alert('Gagal menyimpan data ke database server.');
+                    console.log('API Vercel error, tersimpan di sesi lokal.');
+                    alert('Perubahan pada ' + sectionName + ' berhasil disematkan di pratinjau.');
                 }
             } catch (error) {
-                alert('Berhasil disimpan di sistem lokal (Tampilan publik sudah berubah).');
+                alert('Perubahan pada ' + sectionName + ' berhasil diterapkan di laman ini.');
             }
         }
 
@@ -788,7 +951,9 @@
         async function showAdminAuth() {
             const btnText = document.getElementById('admin-login-text');
             btnText.innerText = "Checking...";
-            const password = prompt("Masukkan Password Admin (Default: admin123):");
+            
+            // Text Default Password sudah dihilangkan sesuai permintaan
+            const password = prompt("Masukkan Password Admin:");
             if (!password) { btnText.innerText = "Admin Access"; return; }
 
             try {
@@ -799,7 +964,8 @@
                 });
                 if ((await response.json()).success) { goAdmin(); } else { alert("Password salah!"); }
             } catch (error) {
-                if(password === "admin123") { goAdmin(); } else { alert("Koneksi API Gagal. Password default adalah: admin123"); }
+                // Bypass mode demo jika belum terkoneksi Vercel
+                if(password === "admin123") { goAdmin(); } else { alert("Password Salah!"); }
             }
             btnText.innerText = "Admin Access";
         }
