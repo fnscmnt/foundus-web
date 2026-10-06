@@ -107,6 +107,31 @@
             </div>
         </section>
 
+        <!-- KEMBALINYA BAGIAN NEWS -->
+        <section id="news" class="py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-end mb-12">
+                    <div>
+                        <h2 class="text-3xl font-bold text-primary mb-2">Latest News</h2>
+                        <p class="text-gray-600">Updates on our journey and milestones.</p>
+                    </div>
+                    <a href="#" class="text-primary font-bold hover:text-secondary transition hidden md:block">View All News &rarr;</a>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-gray-50 rounded-lg overflow-hidden shadow-sm">
+                        <img src="https://images.unsplash.com/photo-1577896851231-70ef18881754?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="News" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <span class="text-secondary text-xs font-bold uppercase tracking-wider">Announcement</span>
+                            <h3 class="text-xl font-bold text-primary mt-2 mb-3">Membangun Keberlanjutan Program</h3>
+                            <p class="text-gray-600 text-sm mb-4">Membuka babak baru dalam pembentukan struktur organisasi dan pemetaan wilayah kerja binaan di Jakarta.</p>
+                            <a href="#" class="text-primary font-semibold text-sm hover:underline">Read More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section class="py-16 bg-gray-100">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="bg-primary rounded-2xl shadow-xl overflow-hidden">
@@ -144,6 +169,7 @@
                         <ul class="space-y-2 text-sm text-gray-400">
                             <li><a href="#about" class="hover:text-white transition">About Us</a></li>
                             <li><a href="#impact" class="hover:text-white transition">Areas of Impact</a></li>
+                            <li><a href="#news" class="hover:text-white transition">News</a></li>
                         </ul>
                     </div>
                     
@@ -155,7 +181,6 @@
                 
                 <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
                     <p>&copy; 2026 Found Us. All rights reserved.</p>
-                    <!-- Tombol Login Admin -->
                     <button onclick="showAdminAuth()" id="btn-admin-login" class="mt-4 md:mt-0 text-gray-600 hover:text-white transition flex items-center gap-2">
                         <i class="fas fa-lock text-xs"></i> <span id="admin-login-text">Admin Access</span>
                     </button>
@@ -225,6 +250,24 @@
                     <textarea id="admin-about-input" rows="5" class="w-full border border-gray-300 rounded p-2 text-sm focus:ring-primary focus:border-primary">Memuat data...</textarea>
                 </div>
 
+                <!-- KEMBALINYA BAGIAN NEWS DI ADMIN -->
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+                    <div class="flex justify-between items-center border-b pb-2 mb-4">
+                        <h2 class="text-lg font-bold text-primary">Edit: News</h2>
+                        <button class="text-xs bg-blue-100 text-blue-800 px-3 py-1.5 rounded font-semibold hover:bg-blue-200">+ Add News</button>
+                    </div>
+                    <div class="border border-gray-200 p-3 rounded mb-2 flex justify-between items-center hover:bg-gray-50 transition">
+                        <div>
+                            <p class="font-semibold text-sm text-gray-800">Membangun Keberlanjutan Program</p>
+                            <p class="text-xs text-gray-500">Published: Oct 10, 2026</p>
+                        </div>
+                        <div class="text-gray-400 flex gap-3">
+                            <i class="fas fa-edit cursor-pointer hover:text-primary transition"></i>
+                            <i class="fas fa-trash cursor-pointer hover:text-red-500 transition"></i>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
                     <h2 class="text-lg font-bold text-primary mb-4 border-b pb-2">Edit: Connect With Us</h2>
                     <p class="text-xs text-gray-500 mb-4">Atur media kontak yang akan ditampilkan di footer publik.</p>
@@ -254,7 +297,6 @@
             document.getElementById('qrisModal').classList.toggle('hidden');
         }
 
-        // FUNGSI LOGIN ADMIN MENGGUNAKAN API VERCEL
         async function showAdminAuth() {
             const btnText = document.getElementById('admin-login-text');
             btnText.innerText = "Checking...";
@@ -267,7 +309,6 @@
             }
 
             try {
-                // Panggil API Vercel untuk verifikasi
                 const response = await fetch('/api/verify-password', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -286,7 +327,6 @@
                 }
             } catch (error) {
                 console.error("Auth error:", error);
-                // Fallback jika Vercel API belum siap/error saat tahap development
                 if(password === "admin123") {
                      alert("API Vercel belum merespons. Menggunakan akses darurat (Offline Mode).");
                      document.getElementById('public-view').classList.add('hidden');
@@ -338,7 +378,7 @@
         }
 
         // ==========================================
-        // DYNAMIC CONTACTS LOGIC (Sama seperti sebelumnya)
+        // DYNAMIC CONTACTS LOGIC
         // ==========================================
         let contactsData = [
             { platform: 'whatsapp', link: 'https://wa.me/628123456789' },
