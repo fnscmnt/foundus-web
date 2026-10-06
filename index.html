@@ -8,6 +8,10 @@
     <link rel="icon" type="image/jpeg" href="logo.jpeg">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Quill.js Rich Text Editor CSS -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+
     <script>
         tailwind.config = {
             theme: { extend: { colors: { primary: '#0a1f44', secondary: '#fbc02d' } } }
@@ -17,6 +21,10 @@
         html { scroll-behavior: smooth; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        /* Kustomisasi tampilan konten Quill di Publik */
+        .ql-editor-public h1, .ql-editor-public h2 { font-weight: bold; margin-bottom: 0.5rem; }
+        .ql-editor-public ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 0.5rem; }
+        .ql-editor-public ol { list-style-type: decimal; padding-left: 1.5rem; margin-bottom: 0.5rem; }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans">
@@ -128,13 +136,11 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="bg-primary rounded-2xl shadow-xl overflow-hidden">
                     <div class="grid grid-cols-1 md:grid-cols-2">
-                        <!-- Partner Block -->
                         <div class="p-10 md:p-14 border-b md:border-b-0 md:border-r border-blue-800 flex flex-col justify-center text-center md:text-left">
                             <h3 id="pub-partner-title" class="text-2xl md:text-3xl font-bold text-white mb-4">Ready to make a difference?</h3>
                             <p id="pub-partner-desc" class="text-gray-300 mb-8">We are actively seeking strategic partners to build educational foundations.</p>
                             <div><a id="pub-partner-link" href="mailto:hello@foundus.org" class="bg-white text-primary font-bold py-3 px-8 rounded hover:bg-gray-200 inline-block">Partner With Us</a></div>
                         </div>
-                        <!-- Donate Block -->
                         <div class="p-10 md:p-14 bg-blue-900 flex flex-col justify-center items-center md:items-start text-center md:text-left">
                             <h3 id="pub-donate-title" class="text-2xl md:text-3xl font-bold text-secondary mb-4">Support Our Cause</h3>
                             <p id="pub-donate-desc" class="text-gray-200 mb-8">Donasi Anda berarti untuk mendampingi mereka meraih masa depan.</p>
@@ -195,7 +201,6 @@
                     </div>
                     <p class="mt-4 text-xs text-gray-400">Atas Nama: <strong id="pub-qris-name" class="text-gray-700">Yayasan Found Us</strong></p>
 
-                    <!-- Bank Transfer Section (Akan disembunyikan jika kosong) -->
                     <div id="pub-bank-container" class="mt-6 pt-6 border-t border-gray-200 hidden">
                         <p class="text-sm text-gray-600 mb-3 font-semibold">Atau Transfer Melalui Rekening Bank:</p>
                         <div class="bg-blue-50 p-4 rounded-lg text-left">
@@ -289,13 +294,12 @@
                     <input type="text" id="adm-bank-holder" placeholder="Atas Nama (Rekening)" class="w-full border-gray-300 rounded p-2 text-sm">
                 </div>
 
-                <!-- Edit Connect With Us (Social Media) -->
+                <!-- Edit Connect With Us -->
                 <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
                     <h2 class="text-lg font-bold text-primary mb-4 border-b pb-2">Edit: Connect With Us</h2>
                     <p class="text-xs text-gray-500 mb-4">Atur media kontak di footer.</p>
                     
                     <div class="flex gap-2 mb-4 flex-wrap">
-                        <!-- Opsi Media Sosial Diperbanyak -->
                         <select id="contact-platform" class="border border-gray-300 rounded p-2 text-sm bg-white min-w-[120px]">
                             <option value="whatsapp">WhatsApp</option>
                             <option value="email">Email</option>
@@ -313,20 +317,41 @@
                     <div id="admin-contact-list" class="space-y-2 border border-gray-100 p-3 rounded bg-gray-50 min-h-[100px] max-h-[250px] overflow-y-auto"></div>
                 </div>
 
-                <!-- Edit News Section -->
+                <!-- Edit News Section with Rich Text & File Upload -->
                 <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 col-span-1 lg:col-span-2">
                     <h2 class="text-lg font-bold text-primary mb-4 border-b pb-2">Edit: News & Milestones</h2>
                     
                     <div class="bg-gray-50 p-4 border border-gray-200 rounded mb-6">
                         <h3 class="font-bold text-sm text-gray-800 mb-3">Tambah Berita Baru</h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
-                            <input type="text" id="news-title" placeholder="Judul Berita" class="border-gray-300 rounded p-2 text-sm w-full">
-                            <input type="text" id="news-date" placeholder="Tanggal (Cth: Oct 10, 2026)" class="border-gray-300 rounded p-2 text-sm w-full">
-                            <input type="text" id="news-img" placeholder="URL Gambar Berita" class="border-gray-300 rounded p-2 text-sm w-full">
-                            <input type="text" id="news-link" placeholder="Link Berita Lengkap (#)" class="border-gray-300 rounded p-2 text-sm w-full">
+                            <div>
+                                <label class="block text-xs font-medium text-gray-700 mb-1">Judul Berita</label>
+                                <input type="text" id="news-title" placeholder="Masukkan Judul..." class="border-gray-300 rounded p-2 text-sm w-full border">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-gray-700 mb-1">Tanggal Publikasi</label>
+                                <input type="text" id="news-date" placeholder="Cth: Oct 10, 2026" class="border-gray-300 rounded p-2 text-sm w-full border">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-gray-700 mb-1">Upload Gambar (Otomatis Kompres)</label>
+                                <input type="file" id="news-img-file" accept="image/*" class="border-gray-300 rounded p-1.5 text-sm w-full border bg-white">
+                                <p id="upload-status" class="text-xs text-blue-600 mt-1"></p>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-gray-700 mb-1">Link Selengkapnya (Opsional)</label>
+                                <input type="text" id="news-link" placeholder="Tautan lengkap (#)" class="border-gray-300 rounded p-2 text-sm w-full border">
+                            </div>
                         </div>
-                        <textarea id="news-excerpt" rows="2" placeholder="Ringkasan singkat berita..." class="w-full border-gray-300 rounded p-2 text-sm mb-3"></textarea>
-                        <button type="button" onclick="addNewsUI()" class="bg-blue-600 text-white px-4 py-2 rounded text-sm hover:bg-blue-700 font-medium">+ Tambah Berita Ke Daftar</button>
+                        
+                        <!-- Rich Text Editor Container -->
+                        <label class="block text-xs font-medium text-gray-700 mb-1 mt-2">Isi Berita</label>
+                        <div class="bg-white">
+                            <div id="editor-container" style="height: 150px;"></div>
+                        </div>
+                        
+                        <button type="button" onclick="addNewsUI()" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded text-sm hover:bg-blue-700 font-medium w-full md:w-auto">
+                            + Tambah Berita Ke Daftar
+                        </button>
                     </div>
 
                     <h3 class="font-bold text-sm text-gray-800 mb-2">Daftar Berita Saat Ini</h3>
@@ -339,11 +364,31 @@
         </main>
     </div>
 
+    <!-- Quill.js Library -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+
     <!-- ========================================== -->
     <!-- SCRIPTS / LOGIC APLIKASI                   -->
     <!-- ========================================== -->
     <script>
-        // --- 1. STATE DATA UTAMA (Mode Demo Lokal) ---
+        // Inisialisasi Rich Text Editor (Quill.js)
+        let quill;
+        document.addEventListener('DOMContentLoaded', () => {
+            quill = new Quill('#editor-container', {
+                theme: 'snow',
+                placeholder: 'Tulis ringkasan atau isi berita di sini...',
+                modules: {
+                    toolbar: [
+                        ['bold', 'italic', 'underline', 'strike'],
+                        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                        [{ 'header': [1, 2, 3, false] }],
+                        ['link']
+                    ]
+                }
+            });
+        });
+
+        // --- 1. STATE DATA UTAMA ---
         let appData = {
             cta: {
                 partnerTitle: "Ready to make a difference?",
@@ -368,7 +413,7 @@
                 {
                     title: "Langkah Awal Menuju NGO Internasional",
                     date: "Oct 10, 2026",
-                    excerpt: "Membuka babak baru dalam pembentukan struktur organisasi dan pemetaan wilayah kerja binaan di Jakarta.",
+                    content: "Membuka babak baru dalam pembentukan struktur organisasi dan pemetaan wilayah kerja binaan di Jakarta.",
                     image: "https://images.unsplash.com/photo-1577896851231-70ef18881754?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
                     link: "#"
                 }
@@ -386,31 +431,106 @@
             'tiktok': { class: 'fab fa-tiktok', color: 'text-gray-400 hover:text-white' }
         };
 
-        // --- 2. FUNGSI RENDER (PUBLIK & ADMIN) ---
-        
+        // --- 2. FUNGSI IMAGE COMPRESSOR ---
+        // Mengubah gambar menjadi Base64 dan mengkompres ukurannya
+        function compressImage(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const img = new Image();
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        const MAX_WIDTH = 800; // Resize maksimal 800px lebarnya
+                        let width = img.width;
+                        let height = img.height;
+
+                        if (width > MAX_WIDTH) {
+                            height *= MAX_WIDTH / width;
+                            width = MAX_WIDTH;
+                        }
+
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+                        
+                        // Kualitas kompresi 0.7 (70%) format JPEG
+                        const dataUrl = canvas.toDataURL('image/jpeg', 0.7); 
+                        resolve(dataUrl);
+                    }
+                    img.src = event.target.result;
+                }
+                reader.onerror = error => reject(error);
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // Variabel global untuk menyimpan base64 gambar yang sedang diupload
+        let currentCompressedImage = null;
+
+        // Listener saat admin memilih gambar berita
+        document.addEventListener('DOMContentLoaded', () => {
+            const fileInput = document.getElementById('news-img-file');
+            const statusText = document.getElementById('upload-status');
+            
+            if(fileInput) {
+                fileInput.addEventListener('change', async function(e) {
+                    const file = e.target.files[0];
+                    if(!file) return;
+                    
+                    statusText.innerText = "Mengompres gambar...";
+                    try {
+                        currentCompressedImage = await compressImage(file);
+                        statusText.innerText = "Gambar siap!";
+                    } catch(err) {
+                        statusText.innerText = "Gagal memproses gambar.";
+                        console.error(err);
+                    }
+                });
+            }
+        });
+
+        // --- 3. FUNGSI SHARE LINK ---
+        function shareNews(title) {
+            const shareUrl = window.location.href.split('#')[0] + '#news';
+            
+            // Gunakan Native Web Share API jika didukung (misal di HP)
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Found Us News: ' + title,
+                    text: 'Cek kabar terbaru dari Found Us: ' + title,
+                    url: shareUrl
+                }).catch(err => console.log('Error sharing:', err));
+            } else {
+                // Fallback: Copy link ke clipboard untuk laptop/desktop
+                navigator.clipboard.writeText(shareUrl).then(() => {
+                    alert('Tautan berita berhasil disalin ke clipboard!');
+                }).catch(err => {
+                    alert('Tautan: ' + shareUrl);
+                });
+            }
+        }
+
+        // --- 4. FUNGSI RENDER (PUBLIK & ADMIN) ---
         function renderAllUI() {
-            // Render CTA Admin
             document.getElementById('adm-part-title').value = appData.cta.partnerTitle;
             document.getElementById('adm-part-desc').value = appData.cta.partnerDesc;
             document.getElementById('adm-part-link').value = appData.cta.partnerLink;
             document.getElementById('adm-don-title').value = appData.cta.donateTitle;
             document.getElementById('adm-don-desc').value = appData.cta.donateDesc;
             
-            // Render CTA Publik
             document.getElementById('pub-partner-title').innerText = appData.cta.partnerTitle;
             document.getElementById('pub-partner-desc').innerText = appData.cta.partnerDesc;
             document.getElementById('pub-partner-link').href = appData.cta.partnerLink;
             document.getElementById('pub-donate-title').innerText = appData.cta.donateTitle;
             document.getElementById('pub-donate-desc').innerText = appData.cta.donateDesc;
 
-            // Render Donate Admin
             document.getElementById('adm-qris-url').value = appData.donate.qrisUrl;
             document.getElementById('adm-qris-name').value = appData.donate.qrisName;
             document.getElementById('adm-bank-name').value = appData.donate.bankName;
             document.getElementById('adm-bank-acc').value = appData.donate.bankAccount;
             document.getElementById('adm-bank-holder').value = appData.donate.bankHolder;
 
-            // Render Donate Publik
             document.getElementById('pub-qris-img').src = appData.donate.qrisUrl;
             document.getElementById('pub-qris-name').innerText = appData.donate.qrisName;
             
@@ -424,16 +544,11 @@
                 bankContainer.classList.add('hidden');
             }
 
-            // Render Contacts
             renderContactsUI();
-            
-            // Render News
             renderNewsUI();
         }
 
-        // Fitur Kontak
         function renderContactsUI() {
-            // Admin
             const adminCont = document.getElementById('admin-contact-list');
             adminCont.innerHTML = '';
             appData.contacts.forEach((contact, idx) => {
@@ -444,7 +559,6 @@
                         <button onclick="removeContact(${idx})" class="text-red-500 hover:text-red-700"><i class="fas fa-trash"></i></button>
                     </div>`;
             });
-            // Publik
             const pubCont = document.getElementById('public-contacts');
             pubCont.innerHTML = '';
             appData.contacts.forEach(contact => {
@@ -464,33 +578,41 @@
         }
         function removeContact(idx) { appData.contacts.splice(idx, 1); renderContactsUI(); }
 
-        // Fitur News
         function renderNewsUI() {
-            // Admin
             const adminNews = document.getElementById('admin-news-list');
             adminNews.innerHTML = '';
             appData.news.forEach((n, idx) => {
                 adminNews.innerHTML += `
                     <div class="border border-gray-200 p-3 rounded flex justify-between items-center bg-white">
-                        <div>
-                            <p class="font-semibold text-sm text-gray-800">${n.title}</p>
-                            <p class="text-xs text-gray-500">Date: ${n.date}</p>
+                        <div class="flex gap-4 items-center">
+                            <img src="${n.image}" class="w-12 h-12 object-cover rounded">
+                            <div>
+                                <p class="font-semibold text-sm text-gray-800">${n.title}</p>
+                                <p class="text-xs text-gray-500">Date: ${n.date}</p>
+                            </div>
                         </div>
-                        <button onclick="removeNews(${idx})" class="text-red-500 hover:text-red-700"><i class="fas fa-trash"></i></button>
+                        <button onclick="removeNews(${idx})" class="text-red-500 hover:text-red-700 bg-red-50 p-2 rounded"><i class="fas fa-trash"></i></button>
                     </div>`;
             });
-            // Publik
+            
             const pubNews = document.getElementById('public-news-container');
             pubNews.innerHTML = '';
             appData.news.forEach(n => {
                 pubNews.innerHTML += `
-                    <div class="bg-gray-50 rounded-lg overflow-hidden shadow-sm">
+                    <div class="bg-gray-50 rounded-lg overflow-hidden shadow-sm flex flex-col">
                         <img src="${n.image}" alt="News Image" class="w-full h-48 object-cover">
-                        <div class="p-6">
+                        <div class="p-6 flex-1 flex flex-col">
                             <span class="text-secondary text-xs font-bold uppercase tracking-wider">${n.date}</span>
                             <h3 class="text-xl font-bold text-primary mt-2 mb-3">${n.title}</h3>
-                            <p class="text-gray-600 text-sm mb-4">${n.excerpt}</p>
-                            <a href="${n.link}" class="text-primary font-semibold text-sm hover:underline">Read More</a>
+                            <!-- Menggunakan ql-editor-public agar format teks dari Quill terbaca dengan baik -->
+                            <div class="text-gray-600 text-sm mb-4 flex-1 ql-editor-public">${n.content}</div>
+                            <div class="flex justify-between items-center mt-auto border-t border-gray-200 pt-4">
+                                <a href="${n.link}" class="text-primary font-semibold text-sm hover:underline">Read More</a>
+                                <!-- Tombol Share -->
+                                <button onclick="shareNews('${n.title.replace(/'/g, "\\'")}')" class="text-gray-500 hover:text-blue-500 transition" title="Bagikan Berita">
+                                    <i class="fas fa-share-alt"></i> Share
+                                </button>
+                            </div>
                         </div>
                     </div>`;
             });
@@ -498,26 +620,33 @@
         function addNewsUI() {
             const title = document.getElementById('news-title').value.trim();
             const date = document.getElementById('news-date').value.trim();
-            const image = document.getElementById('news-img').value.trim() || 'https://images.unsplash.com/photo-1577896851231-70ef18881754?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80';
             const link = document.getElementById('news-link').value.trim() || '#';
-            const excerpt = document.getElementById('news-excerpt').value.trim();
             
-            if(!title || !excerpt) return alert("Judul dan Ringkasan wajib diisi!");
-            appData.news.unshift({ title, date, image, link, excerpt }); // Tambah ke atas
+            // Ambil format HTML langsung dari editor Quill
+            const contentHTML = quill.root.innerHTML; 
             
-            // Kosongkan form input
+            // Gunakan gambar hasil kompresi (base64) atau fallback ke placeholder
+            const finalImage = currentCompressedImage || 'https://images.unsplash.com/photo-1577896851231-70ef18881754?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80';
+            
+            if(!title || quill.getText().trim().length === 0) return alert("Judul dan Isi Berita wajib diisi!");
+            
+            appData.news.unshift({ title, date, image: finalImage, link, content: contentHTML });
+            
+            // Reset form
             document.getElementById('news-title').value = '';
             document.getElementById('news-date').value = '';
-            document.getElementById('news-img').value = '';
+            document.getElementById('news-img-file').value = '';
+            document.getElementById('upload-status').innerText = '';
             document.getElementById('news-link').value = '';
-            document.getElementById('news-excerpt').value = '';
+            quill.setContents([]); // Kosongkan editor
+            currentCompressedImage = null; // Reset image cache
+            
             renderNewsUI();
         }
         function removeNews(idx) { appData.news.splice(idx, 1); renderNewsUI(); }
 
-        // --- 3. FUNGSI SIMPAN SELURUH DATA ---
+        // --- 5. FUNGSI SIMPAN SELURUH DATA & NAVIGASI ---
         async function saveAllLocalData() {
-            // Ambil dari input UI
             appData.cta.partnerTitle = document.getElementById('adm-part-title').value;
             appData.cta.partnerDesc = document.getElementById('adm-part-desc').value;
             appData.cta.partnerLink = document.getElementById('adm-part-link').value;
@@ -530,16 +659,10 @@
             appData.donate.bankAccount = document.getElementById('adm-bank-acc').value;
             appData.donate.bankHolder = document.getElementById('adm-bank-holder').value;
 
-            // Update UI Publik dengan data baru
             renderAllUI();
-            
-            // Simpan Teks About Us ke Vercel/Turso (Fungsi yang sudah ada sebelumnya)
             await saveAboutText();
         }
 
-        // ==========================================
-        // DATABASE VERCEL & TURSO LOGIC (About Us & Password)
-        // ==========================================
         async function loadAboutText() {
             try {
                 const response = await fetch('/api/get-about');
@@ -562,13 +685,13 @@
                 });
                 const result = await response.json();
                 if (result.success) {
-                    alert('Semua perubahan berhasil diterapkan & disimpan!');
+                    alert('Semua perubahan berhasil diterapkan!');
                     loadAboutText(); 
                 } else {
                     alert('Gagal menyimpan data ke database server.');
                 }
             } catch (error) {
-                alert('Berhasil disimpan di sistem lokal (Refresh akan hilang). Hubungkan Vercel untuk simpan permanen.');
+                alert('Berhasil disimpan di sistem lokal (Tampilan publik sudah berubah).');
             }
         }
 
@@ -588,7 +711,6 @@
             } catch (e) { alert("Sistem Vercel belum siap. Password belum bisa diganti permanen."); }
         }
 
-        // --- 4. NAVIGASI UI & INISIALISASI ---
         function toggleQRIS() { document.getElementById('qrisModal').classList.toggle('hidden'); }
         
         async function showAdminAuth() {
