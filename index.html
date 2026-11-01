@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Found Us - Temui Kita, Temani Kita</title>
     
-    <link rel="icon" type="image/jpeg" href="logo.jpeg">
+    <link rel="icon" type="image/jpeg" href="WhatsApp%20Image%202026-10-31%20at%2021.10.02.jpeg">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 
     <script>
@@ -20,13 +21,11 @@
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
-        /* Render Kustomisasi Editor untuk Publik */
         .ql-editor-public h1, .ql-editor-public h2 { font-weight: bold; margin-bottom: 0.5rem; }
         .ql-editor-public ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 0.5rem; }
         .ql-editor-public ol { list-style-type: decimal; padding-left: 1.5rem; margin-bottom: 0.5rem; }
         .bg-transition { transition: background-image 1.5s ease-in-out; }
         
-        /* Mendukung fitur Rata Kanan, Kiri, Tengah, Justify */
         .ql-align-center { text-align: center; }
         .ql-align-justify { text-align: justify; }
         .ql-align-right { text-align: right; }
@@ -45,7 +44,7 @@
                 <div class="flex justify-between h-20">
                     <div class="flex items-center">
                         <div class="flex items-center gap-3">
-                            <img src="logo.jpeg" alt="Found Us Logo" class="h-12 w-auto object-contain rounded shadow-sm">
+                            <img src="WhatsApp%20Image%202026-10-31%20at%2021.10.02.jpeg" alt="Found Us Logo" class="h-12 w-auto object-contain rounded shadow-sm">
                             <span class="font-bold text-2xl text-primary tracking-tight leading-tight hidden sm:block">FOUND US</span>
                         </div>
                     </div>
@@ -84,7 +83,6 @@
                 <h2 class="text-3xl font-bold text-primary mb-6">About Us</h2>
                 <div class="w-24 h-1 bg-secondary mx-auto mb-8"></div>
                 <div class="bg-white/80 p-8 rounded-2xl shadow-sm backdrop-blur-sm border border-gray-100">
-                    <!-- Text About Us memanggil ql-editor-public agar format dari Editor (Center, dll) berfungsi -->
                     <div id="public-about-text" class="text-gray-700 text-lg leading-relaxed whitespace-pre-line ql-editor-public">Memuat data...</div>
                 </div>
             </div>
@@ -154,7 +152,6 @@
                             <button onclick="toggleQRIS()" id="btn-donate-trigger" class="bg-secondary text-primary font-bold py-3 px-10 rounded shadow-lg hover:bg-yellow-400 w-full md:w-auto flex items-center justify-center gap-2">
                                 <i class="fas fa-qrcode"></i> Donate Now
                             </button>
-                            <!-- Pesan ini muncul otomatis jika admin mengosongkan QRIS & Rekening -->
                             <p id="pub-no-donate-btn-msg" class="text-sm text-yellow-300 mt-4 hidden font-medium">Metode donasi sedang tidak tersedia saat ini.</p>
                         </div>
                     </div>
@@ -167,7 +164,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                     <div class="col-span-1 md:col-span-2">
                         <div class="flex items-center gap-3 mb-4">
-                            <div class="bg-white p-1 rounded"><img src="logo.jpeg" alt="Found Us Logo" class="h-8 w-auto object-contain"></div>
+                            <div class="bg-white p-1 rounded"><img src="WhatsApp%20Image%202026-10-31%20at%2021.10.02.jpeg" alt="Found Us Logo" class="h-8 w-auto object-contain"></div>
                             <span class="font-bold text-lg tracking-tight">FOUND US</span>
                         </div>
                         <p class="text-gray-400 text-sm pr-10">Menemui dan menemani. Menjaga nyala harapan anak-anak miskin kota demi mendapatkan masa depan yang lebih baik.</p>
@@ -201,10 +198,8 @@
                 <div class="bg-primary p-4 text-center sticky top-0"><h3 class="text-white font-bold text-lg">Support Found Us</h3></div>
                 
                 <div class="p-8 text-center">
-                    <!-- Kontainer Peringatan Kosong -->
                     <p id="pub-no-donate" class="text-sm text-red-500 hidden py-4 font-semibold">Metode pembayaran donasi saat ini belum tersedia.</p>
 
-                    <!-- Kontainer QRIS -->
                     <div id="pub-qris-container">
                         <p class="text-sm text-gray-600 mb-4">Silakan scan kode QRIS di bawah ini menggunakan aplikasi e-Wallet Anda.</p>
                         <div class="border-2 border-dashed border-gray-300 p-2 rounded-lg inline-block bg-gray-50">
@@ -213,7 +208,6 @@
                         <p class="mt-4 text-xs text-gray-400">Atas Nama: <strong id="pub-qris-name" class="text-gray-700"></strong></p>
                     </div>
 
-                    <!-- Kontainer Bank -->
                     <div id="pub-bank-container" class="mt-6 pt-6 border-t border-gray-200 hidden">
                         <p class="text-sm text-gray-600 mb-3 font-semibold">Atau Transfer Melalui Rekening Bank:</p>
                         <div class="bg-blue-50 p-4 rounded-lg text-left">
@@ -234,7 +228,7 @@
         
         <aside class="w-64 bg-primary text-white flex flex-col h-full min-h-screen shadow-lg relative">
             <div class="p-6 border-b border-blue-800 flex items-center gap-3">
-                <img src="logo.jpeg" alt="Logo" class="h-6 bg-white p-0.5 rounded">
+                <img src="WhatsApp%20Image%202026-10-31%20at%2021.10.02.jpeg" alt="Logo" class="h-6 bg-white p-0.5 rounded">
                 <span class="font-bold text-lg text-secondary">Admin CMS</span>
             </div>
             <nav class="flex-1 p-4 space-y-2">
@@ -258,7 +252,6 @@
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 pb-20">
                 
-                <!-- Edit Password -->
                 <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
                     <div class="flex justify-between items-center border-b pb-2 mb-4">
                         <h2 class="text-lg font-bold text-red-600"><i class="fas fa-lock mr-2"></i>Security Settings</h2>
@@ -270,7 +263,6 @@
                     </div>
                 </div>
 
-                <!-- Edit About Us Menggunakan Rich Text Editor -->
                 <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
                     <div class="flex justify-between items-center border-b pb-2 mb-4">
                         <h2 class="text-lg font-bold text-primary">Edit: About Us</h2>
@@ -281,7 +273,6 @@
                     </div>
                 </div>
 
-                <!-- Edit Latar Belakang -->
                 <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 col-span-1 lg:col-span-2">
                     <div class="flex justify-between items-center border-b pb-2 mb-4">
                         <h2 class="text-lg font-bold text-primary">Edit: Latar Belakang (Slideshow)</h2>
@@ -305,7 +296,6 @@
                     <div id="admin-bg-list" class="flex flex-wrap gap-4 bg-gray-50 p-4 border border-gray-100 rounded min-h-[100px]"></div>
                 </div>
 
-                <!-- Edit Partner & Donate Text -->
                 <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 col-span-1 lg:col-span-2">
                     <div class="flex justify-between items-center border-b pb-2 mb-4">
                         <h2 class="text-lg font-bold text-primary">Edit: Banner "Partner With Us" & "Donate"</h2>
@@ -326,7 +316,6 @@
                     </div>
                 </div>
 
-                <!-- Edit Info Donasi -->
                 <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
                     <div class="flex justify-between items-center border-b pb-2 mb-4">
                         <h2 class="text-lg font-bold text-primary">Edit: Data Donasi (QRIS & Bank)</h2>
@@ -341,9 +330,7 @@
                     </div>
                     <p id="qris-upload-status" class="text-xs text-blue-600 mb-4"></p>
                     
-                    <div id="admin-qris-preview" class="mb-4">
-                        <!-- Thumbnail QRIS akan muncul di sini -->
-                    </div>
+                    <div id="admin-qris-preview" class="mb-4"></div>
 
                     <input type="text" id="adm-qris-name" placeholder="Atas Nama (QRIS)" class="w-full border-gray-300 rounded p-2 text-sm mb-6">
                     
@@ -353,7 +340,6 @@
                     <input type="text" id="adm-bank-holder" placeholder="Atas Nama (Rekening)" class="w-full border-gray-300 rounded p-2 text-sm">
                 </div>
 
-                <!-- Edit Kontak -->
                 <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
                     <div class="flex justify-between items-center border-b pb-2 mb-4">
                         <h2 class="text-lg font-bold text-primary">Edit: Connect With Us</h2>
@@ -377,7 +363,6 @@
                     <div id="admin-contact-list" class="space-y-2 border border-gray-100 p-3 rounded bg-gray-50 min-h-[100px] max-h-[250px] overflow-y-auto"></div>
                 </div>
 
-                <!-- Edit News -->
                 <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 col-span-1 lg:col-span-2">
                     <div class="flex justify-between items-center border-b pb-2 mb-4">
                         <h2 class="text-lg font-bold text-primary">Edit: News & Milestones</h2>
@@ -425,14 +410,11 @@
         let quillNews = null;
         let quillAbout = null;
 
-        // ==========================================
-        // 1. Inisialisasi Aman untuk Quill Editor
-        // ==========================================
         function initQuillEditors() {
             const toolbarOptions = [
                 ['bold', 'italic', 'underline', 'strike'],
                 [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                [{ 'align': [] }], // Fitur Rata Kanan Kiri
+                [{ 'align': [] }], 
                 [{ 'header': [1, 2, 3, false] }],
                 ['link']
             ];
@@ -465,9 +447,6 @@
             return date.toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' });
         }
 
-        // ==========================================
-        // 2. MASTER APP DATA
-        // ==========================================
         let appData = {
             aboutText: "<p class=\"ql-align-center\">Setiap anak berhak memupuk keyakinan untuk mendapatkan masa depan yang lebih baik. Found Us berusaha untuk menjaga itu, sebuah asa yang memancar dari binar mata anak-anak miskin kota. Meski mereka tumbuh di antara lorong-lorong muram Jakarta.</p><p class=\"ql-align-center\"><br></p><p class=\"ql-align-center\">Atas dasar itu, kami bertekad untuk menemui dan menemani mereka demi menjaga nyala harapannya melalui penyediaan ruang belajar dan wadah pengembangan potensi yang selama ini belum didapati secara maksimal.</p>",
             cta: {
@@ -515,9 +494,6 @@
         let editingContactIndex = -1;
         let editingNewsIndex = -1;
 
-        // ==========================================
-        // 3. KONEKSI DATABASE
-        // ==========================================
         async function fetchMasterDataFromDB() {
             try {
                 const response = await fetch('/api/get-data');
@@ -539,7 +515,7 @@
                     }
                 }
             } catch (error) {
-                console.log("Database belum terhubung. Menggunakan data simulasi lokal.");
+                console.log("Database belum terhubung. Menggunakan data default.");
             }
             renderAllUI();
         }
@@ -579,9 +555,6 @@
             }
         }
 
-        // ==========================================
-        // 4. IMAGE COMPRESSOR & BACKGROUND LOGIC
-        // ==========================================
         function compressImage(file) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
@@ -621,9 +594,6 @@
             }
         });
 
-        // ==========================================
-        // 5. QRIS UPLOAD LOGIC
-        // ==========================================
         async function uploadQrisUI() {
             const fileInput = document.getElementById('adm-qris-file');
             const file = fileInput.files[0];
@@ -735,9 +705,6 @@
             }
         }
 
-        // ==========================================
-        // 5. RENDER UI FUNCTIONS (DENGAN SAFE FALLBACK)
-        // ==========================================
         function renderAllUI() {
             try {
                 if(quillAbout && appData?.aboutText) quillAbout.root.innerHTML = appData.aboutText;
@@ -760,7 +727,6 @@
                 document.getElementById('adm-bank-acc').value = appData?.donate?.bankAccount || "";
                 document.getElementById('adm-bank-holder').value = appData?.donate?.bankHolder || "";
 
-                // --- LOGIKA TERINTEGRASI UNTUK DONASI ---
                 const hasQris = appData?.donate?.qrisUrl && appData.donate.qrisUrl.trim() !== "";
                 const hasBank = appData?.donate?.bankName && appData?.donate?.bankAccount;
                 
@@ -1013,10 +979,7 @@
             adminView.classList.add('flex');
             window.scrollTo(0,0);
             
-            // Inisialisasi Editor setelah container benar-benar dirender agar dimensi bisa dibaca Quill
-            setTimeout(() => {
-                initQuillEditors();
-            }, 50);
+            setTimeout(() => { initQuillEditors(); }, 50);
         }
 
         function showPublic() {
@@ -1026,7 +989,6 @@
             window.scrollTo(0,0);
         }
 
-        // JALANKAN SAAT HALAMAN DIBUKA
         document.addEventListener('DOMContentLoaded', () => {
             fetchMasterDataFromDB(); 
         });
